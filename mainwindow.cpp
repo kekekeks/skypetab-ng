@@ -249,9 +249,12 @@ void STabMainWindow::tabChangedAfterShock()
 void STabMainWindow::tabCloseRequested(int index)
 {
 	STWindowContainer* cont=qobject_cast<STWindowContainer*>(_tabs->widget(index));
+	QWidget *target=cont->inputArea();
+	if(target==0)
+		target=cont->widget();
 	QKeyEvent ev (QEvent::KeyPress, Qt::Key_W, Qt::ControlModifier, "w");
 	QKeyEvent ev2 (QEvent::KeyRelease, Qt::Key_W, Qt::ControlModifier, "w");
-	cont->inputArea()->keyPressEvent(&ev);
-	cont->inputArea()->keyPressEvent(&ev2);
+	target->keyPressEvent(&ev);
+	target->keyPressEvent(&ev2);
 }
 }
