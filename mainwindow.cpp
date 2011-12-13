@@ -26,7 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QKeyEvent>
 #include <QTimer>
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include <QTabWidget>
 #include <QtDebug>
 #include <focusguard.h>

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QApplication>
 #include <QList>
 #include <QTabWidget>
 #include <QSplitter>
