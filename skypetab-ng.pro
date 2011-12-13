@@ -31,24 +31,20 @@ HEADERS +=\
     focusguard.h \
     aboutdialog.h
 
-symbian {
-    MMP_RULES += EXPORTUNFROZEN
-    TARGET.UID3 = 0xE93225CF
-    TARGET.CAPABILITY = 
-    TARGET.EPOCALLOWDLLDATA = 1
-    addFiles.sources = skypetab-ng.dll
-    addFiles.path = !:/sys/bin
-    DEPLOYMENT += addFiles
-}
+unix:
+{
+   target.path = /usr/lib
 
-unix:!symbian {
-    maemo5 {
-        target.path = /opt/usr/lib
-    } else {
-        target.path = /usr/lib
-    }
-    INSTALLS += target
-}
+   desktop.path = /usr/share/applications
+   desktop.files = skypetab-ng.desktop
+   launcher.path = /usr/bin
+   launcher.files = skypetab-ng
+   launcher.extra = chmod +x skypetab-ng
 
+
+   INSTALLS += target
+   INSTALLS += desktop
+   INSTALLS += launcher
+}
 FORMS += \
     aboutdialog.ui
