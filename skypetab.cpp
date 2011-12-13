@@ -80,7 +80,8 @@ void SkypeTab::timerEvent(QTimerEvent *)
 				if(0==strcmp(classname, *name))
 				{
 					mainWindow->show();
-					QApplication::setActiveWindow(mainWindow);
+					mainWindow->activateWindow();
+					X11::Flush();
 					mainWindow->AddTab(widget);
 
 					break;

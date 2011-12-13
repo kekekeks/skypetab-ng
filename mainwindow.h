@@ -29,6 +29,7 @@ protected:
 	void timerEvent(QTimerEvent*);
 	virtual void resizeEvent(QResizeEvent *event);
 	bool contactsHidden();
+	virtual void closeEvent(QCloseEvent *);
 private:
 	QTabWidget* _tabs;
 	ContactListContainer* _contacts;

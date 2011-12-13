@@ -186,6 +186,16 @@ bool STabMainWindow::contactsHidden()
 	return _splitter->sizes()[0]==0;
 }
 
+void STabMainWindow::closeEvent(QCloseEvent *ev)
+{
+	for(int i=_tabs->count()-1; i>=0; i--)
+	{
+		tabCloseRequested(i);
+	}
+	ev->accept();
+}
+
+
 QList<int> STabMainWindow::getSizes(bool contactsHidden, QSize*newSize)
 {
 
