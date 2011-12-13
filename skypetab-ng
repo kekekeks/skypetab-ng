@@ -1,2 +1,2 @@
 #!/bin/sh
-LD_PRELOAD=libskypetab-ng.so:LD_PRELOAD skype
+LD_PRELOAD=libskypetab-ng.so:$LD_PRELOAD exec skype $*
