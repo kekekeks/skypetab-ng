@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+clean:
+	
+build:
+	qmake -spec linux-g++-32
+	make
+
+install: build
+	make install  INSTALL_ROOT=`pwd`/debian/skypetab-ng
+
+binary-indep:
+
+binary-arch: install
+	dh_fixperms
+	dh_compress
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-arch
