@@ -1,3 +1,9 @@
+skypetab-ng (0.4.1-2) oneiric; urgency=low
+
+  * Trying to fix amd64 build
+
+ -- Nikita Tsukanov <keks9n@gmail.com>  Wed, 14 Dec 2011 12:37:40 +0400
+
 skypetab-ng (0.4.1-1) oneiric; urgency=low
 
   * Initial packaging 
