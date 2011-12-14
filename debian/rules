@@ -16,5 +16,6 @@ binary-arch: install
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
-
+	sed -i "s/i386/amd64/" debian/skypetab-ng/DEBIAN/control
+	dh_builddeb
 binary: binary-arch
