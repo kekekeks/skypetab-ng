@@ -8,6 +8,7 @@ Vcs-Git: git://github.com/kekekeks/skypetab-ng.git
 Vcs-Browser: https://github.com/kekekeks/skypetab-ng
 
 Package: skypetab-ng
-Architecture: i386
-Depends: 
+Architecture: all
+Depends:
+Conflicts: skypetab
 Description: SkypeTab is a program that adds tabs to Skype™ for Linux
