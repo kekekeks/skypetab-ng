@@ -45,15 +45,9 @@ FocusGuard FocusGuard::_instance;
 
 bool FocusGuard::eventFilter(QObject *obj, QEvent *event)
 {
-	if(event->type()==QEvent::ChildAdded)
-	{
-		obj->installEventFilter(this);
-	}
-	else if(event->type()==QEvent::MouseButtonPress)
+	if(event->type()==QEvent::MouseButtonPress)
 	{
 		QWidget *w=qobject_cast<QWidget*>(obj);
-		if(!(w->focusPolicy()&Qt::ClickFocus))
-			return false;
 		QObject* parent=obj;
 		while(parent!=0)
 		{
