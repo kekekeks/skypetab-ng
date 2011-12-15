@@ -5,6 +5,7 @@
 
 namespace skypetab
 {
+	QWidget*WindowCreationInitiator=0;
 	struct SignalInterceptInfo
 	{
 		const char* className;
@@ -71,23 +72,47 @@ bool QObject::connect ( const QObject * sender, const char * signal, const QObje
 	return real_connect(sender, signal, receiver, method, type);
 }
 
-/*
-typedef void (QSystemTrayIcon::*setIconProto)(const QIcon &icon);
-setIconProto real_setIcon=0;
-extern void QSystemTrayIcon::setIcon(const QIcon &icon)
+
+typedef void (QWidget::*setVisibleProto)(bool visible);
+setVisibleProto realSetVisible=0;
+extern void QWidget::setVisible(bool visible)
 {
-	if(real_setIcon==0)
+	if(realSetVisible==0)
 	{
-		real_setIcon=&QSystemTrayIcon::setIcon;
+		//It's a virtual function and I cann't figure
+		//out how to get it's symbol name at runtime
+
+		void *ptr=dlsym(RTLD_NEXT, "_ZN7QWidget10setVisibleEb");
+		memcpy(&realSetVisible, &ptr, sizeof(ptr));
+	}
+	if(parentWidget()==0)
+		winId(); //Force it to create a window _now_
+	(this->*realSetVisible)(visible);
+}
+
+typedef WId (QWidget::*winIdproto)() const;
+winIdproto realWinId=0;
+extern WId QWidget::winId() const
+{
+	if(realWinId==0)
+	{
+		realWinId=&QWidget::winId;
 		void *ptr;
-		memcpy(&ptr, &real_setIcon, sizeof(ptr));
+		memcpy(&ptr, &realWinId, sizeof(ptr));
 		Dl_info nfo;
 		dladdr(ptr, &nfo);
 		ptr=dlsym(RTLD_NEXT, nfo.dli_sname);
-		memcpy(&real_setIcon, &ptr, sizeof(ptr));
+		memcpy(&realWinId, &ptr, sizeof(ptr));
 	}
-	(this->*real_setIcon)(icon);
+	if(parentWidget()==0)
+	{
+		QWidget*oldInitiator=WindowCreationInitiator;
+		WindowCreationInitiator=const_cast<QWidget*>(this);
+		WId rv=(this->*realWinId)();
+		WindowCreationInitiator=oldInitiator;
+		return rv;
+	}
 
-	//this->metaObject()->
+	else
+		return (this->*realWinId)();
 }
-*/
