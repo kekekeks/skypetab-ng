@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMouseEvent>
 #include "focusguard.h"
 #include "mainwindow.h"
-
+#include "qintercept.h"
 #include <QtDebug>
 #include "x11.h"
 #include <X11/Xlib.h>
@@ -37,13 +37,15 @@ SkypeTab::SkypeTab(QObject *parent) :
     QObject(parent)
 {
 	QTimer::singleShot(200, this, SLOT(init()));
+	AddSignalIntercept("QSystemTrayIcon", SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+			this, SLOT(onTrayMenuActivated(QSystemTrayIcon::ActivationReason)),
+			SIGNAL(raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason)));
 }
 
 void SkypeTab::init()
 {
 	_trayIcon=0;
 	_trayMenu=0;
-	_nextMenuIsMainMenu=false;
 	_aboutDialog=new AboutDialog();
 	mainWindow=new STabMainWindow();
 	printf("Created main window\n");
@@ -59,6 +61,24 @@ void SkypeTab::onMenuShow()
 	myMenu->addAction("About SkypeTab", _aboutDialog, SLOT(exec()));
 	_trayMenu->insertMenu(actions[actions.length()-1],myMenu);
 
+}
+
+void SkypeTab::onTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
+{
+	if(reason!=QSystemTrayIcon::Context)
+	{
+		onTrayIcon();
+	}
+	else
+	{
+		raiseTrayMenuActivated(reason);
+		if(_trayIcon==0)
+		{
+			_trayIcon=qobject_cast<QSystemTrayIcon*>(sender());
+			_trayMenu=_trayIcon->contextMenu();
+			connect(_trayMenu, SIGNAL(aboutToShow()),this, SLOT(onMenuShow()));
+		}
+	}
 }
 void SkypeTab::timerEvent(QTimerEvent *)
 {
@@ -94,61 +114,29 @@ void SkypeTab::timerEvent(QTimerEvent *)
 				if(title.contains("Skype")&&title.contains("Beta"))
 					mainWindow->SetMainWindow(widget);
 			}
-			if((_trayMenu==0)&&(_nextMenuIsMainMenu)&&(strcmp(classname, "QMenu")==0))
-			{
-
-				_trayMenu=qobject_cast<QMenu*>(widget);
-				connect(_trayMenu, SIGNAL(aboutToShow()),this, SLOT(onMenuShow()));
-				onMenuShow();
-
-
-			}
-
-			if(_trayIcon==0)
-			{
-				_trayIcon=widget;
-				_trayIcon->installEventFilter(this);
-			}
-
 		}
 
 
 	}
 }
 
-bool SkypeTab::eventFilter(QObject *, QEvent *ev)
-{
-	if(ev->type()==QEvent::MouseButtonDblClick)
-	{
-		onTrayIcon();
-		return true;
-	}
-	else if(ev->type()==QEvent::MouseButtonPress)
-	{
-		QMouseEvent*mev=(QMouseEvent*)ev;
-		if(mev->button()==Qt::RightButton)
-			_nextMenuIsMainMenu=true;
-		else
-		{
-			onTrayIcon();
-			return true;
-		}
-	}
 
-
-	return false;
-}
 
 bool SkypeTab::initialized=false;
 std::queue<WId> SkypeTab::pendingWindows;
 void SkypeTab::onNewWindow(WId win)
+{
+	tryInit();
+	pendingWindows.push(win);
+}
+
+void SkypeTab::tryInit()
 {
 	if(!initialized)
 	{
 		initialized=true;
 		new SkypeTab();
 	}
-	pendingWindows.push(win);
 }
 
 void SkypeTab::onTrayIcon()

@@ -19,7 +19,8 @@ SOURCES += \
     stwatcher.cpp \
     contactlistcontainer.cpp \
     focusguard.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    qtintercept.cpp
 
 HEADERS +=\
     mainwindow.h \
@@ -29,7 +30,8 @@ HEADERS +=\
     stwatcher.h \
     contactlistcontainer.h \
     focusguard.h \
-    aboutdialog.h
+    aboutdialog.h \
+    qintercept.h
 
 unix:
 {
