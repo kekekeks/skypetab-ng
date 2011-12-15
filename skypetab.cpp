@@ -141,12 +141,7 @@ void SkypeTab::tryInit()
 
 void SkypeTab::onTrayIcon()
 {
-	if(mainWindow->isActiveWindow())
-		mainWindow->toggleContacts();
-	else
-	{
 		mainWindow->show();
 		mainWindow->activateWindow();
-	}
 }
 }
