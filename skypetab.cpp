@@ -36,7 +36,7 @@ namespace skypetab
 SkypeTab::SkypeTab(QObject *parent) :
     QObject(parent)
 {
-	QTimer::singleShot(200, this, SLOT(init()));
+	mainWindow=0;
 	AddSignalIntercept("QSystemTrayIcon", SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
 			this, SLOT(onTrayMenuActivated(QSystemTrayIcon::ActivationReason)),
 			SIGNAL(raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason)));
@@ -44,14 +44,18 @@ SkypeTab::SkypeTab(QObject *parent) :
 
 void SkypeTab::init()
 {
+	if(mainWindow!=0)
+		return;
+	mainWindow=new STabMainWindow();
 	_trayIcon=0;
 	_trayMenu=0;
 	_aboutDialog=new AboutDialog();
-	mainWindow=new STabMainWindow();
+
 	printf("Created main window\n");
 	mainWindow->show();
 	this->startTimer(50);
 }
+
 
 void SkypeTab::onMenuShow()
 {
@@ -80,54 +84,46 @@ void SkypeTab::onTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
 		}
 	}
 }
-void SkypeTab::timerEvent(QTimerEvent *)
-{
-	while(pendingWindows.size()!=0)
-	{
-		Window win=pendingWindows.front();
-		pendingWindows.pop();
-		QWidget* widget=QWidget::find(win);
-		if(widget!=NULL)
-		{
-			const QMetaObject* meta=widget->metaObject();
-			printf("%s (%p) is under control\n", meta->className(), widget->winId());
-			static const char*names[]={"Skype::ChatWindow", "Skype::TransferWindow", 0};
-			const char**name=names;
-			const char* classname=meta->className();
-			while(*name!=0)
-			{
-
-				if(0==strcmp(classname, *name))
-				{
-					mainWindow->show();
-					mainWindow->activateWindow();
-					X11::Flush();
-					mainWindow->AddTab(widget);
-
-					break;
-				}
-				name++;
-			}
-			if(0==strcmp(classname, "QWidget"))
-			{
-				QString title=widget->windowTitle();
-				if(title.contains("Skype")&&title.contains("Beta"))
-					mainWindow->SetMainWindow(widget);
-			}
-		}
-
-
-	}
-}
 
 
 
 bool SkypeTab::initialized=false;
-std::queue<WId> SkypeTab::pendingWindows;
-void SkypeTab::onNewWindow(WId win)
+SkypeTab* SkypeTab::_instance=0;
+QWidget*SkypeTab::_mainSkypeWindow;
+static bool _returnImmediately=false;
+WId SkypeTab::onNewWindow()
 {
 	tryInit();
-	pendingWindows.push(win);
+	QWidget*widget=WindowCreationInitiator;
+	if(widget==0)
+		return 0;
+	if(_returnImmediately)
+		return 0;
+	const QMetaObject* meta=widget->metaObject();
+
+	static const char*names[]={"Skype::ChatWindow", "Skype::TransferWindow", 0};
+	const char**name=names;
+	const char* classname=meta->className();
+	while(*name!=0)
+	{
+
+		if(0==strcmp(classname, *name))
+		{
+			STabMainWindow *mw=_instance->mainWindow;
+			mw->show();
+
+			X11::Flush();
+			_returnImmediately=true;
+			WId id=mw->AddTab(widget)->winId();
+			mw->activateWindow();
+			_returnImmediately=false;
+			return id;
+
+		}
+		name++;
+	}
+	return 0;
+
 }
 
 void SkypeTab::tryInit()
@@ -135,7 +131,24 @@ void SkypeTab::tryInit()
 	if(!initialized)
 	{
 		initialized=true;
-		new SkypeTab();
+		_instance=new SkypeTab();
+	}
+}
+
+void SkypeTab::onTryShow(QWidget *widget)
+{
+	tryInit();
+	if(0==strcmp(widget->metaObject()->className(), "QWidget"))
+	{
+		QString title=widget->windowTitle();
+		if(title.contains("Skype")&&title.contains("Beta"))
+		{
+			_mainSkypeWindow=widget;
+			X11::Flush();
+			_instance->init();
+			_instance->mainWindow->SetMainWindow(widget);
+
+		}
 	}
 }
 

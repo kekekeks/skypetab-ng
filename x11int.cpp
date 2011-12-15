@@ -31,9 +31,10 @@ extern "C" Window XCreateSimpleWindow(Display *display, Window parent, int x, in
 						   unsigned int border_width, unsigned long border, unsigned long background)
 {
 	X11::XDisplay=display;
-	Window win= orig_XCreateSimpleWindow(display, parent, x, y, width, height, border_width, border, background);
-	skypetab::SkypeTab::onNewWindow(win);
-	return win;
+	Window np=skypetab::SkypeTab::onNewWindow();
+	if(np!=0)
+		parent=np;
+	return orig_XCreateSimpleWindow(display, parent, x, y, width, height, border_width, border, background);
 }
 
 typedef Window (*XCreateWindow_Proto)(Display *, Window, int, int, unsigned int, unsigned int, unsigned int, int, unsigned int, Visual *, unsigned long, XSetWindowAttributes *);
@@ -43,8 +44,9 @@ extern "C" Window XCreateWindow(Display *display, Window parent, int x, int y, u
 			 _class, Visual *visual, unsigned long valuemask, XSetWindowAttributes *attributes)
 {
 	X11::XDisplay=display;
-	Window win= orig_XCreateWindow(display, parent, x, y, width, height, border_width, depth, _class, visual, valuemask, attributes);
-	skypetab::SkypeTab::onNewWindow(win);
-	return win;
+	Window np=skypetab::SkypeTab::onNewWindow();
+	if(np!=0)
+		parent=np;
+	return orig_XCreateWindow(display, parent, x, y, width, height, border_width, depth, _class, visual, valuemask, attributes);
 }
 

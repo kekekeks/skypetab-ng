@@ -19,14 +19,13 @@ class SkypeTab : public QObject
 	void onTrayIcon();
 public:
     explicit SkypeTab(QObject *parent = 0);
-	static std::queue<WId> pendingWindows;
+	static QWidget*_mainSkypeWindow;
 	static bool initialized;
-	static void onNewWindow (WId window);
+	static SkypeTab*_instance;
+	static WId onNewWindow ();
 	static void tryInit();
 	STabMainWindow* mainWindow;
-
-protected:
-	void timerEvent(QTimerEvent *);
+	static void onTryShow(QWidget*widget);
 
 signals:
 	void raiseTrayMenuActivated (QSystemTrayIcon::ActivationReason reason);

@@ -68,25 +68,19 @@ QWidget* FindChild(QWidget *widget, const char *className)
 void STWindowContainer::embedWindow(QWidget *widgetToEmbed)
 {
 	_embedded=widgetToEmbed;
-	XReparentWindow(X11::XDisplay, _embedded->winId(), winId(),0,0);
-	X11::Flush();
-	_embedded->show();
-
 	_embeddedAt=time(0);
 	connect(widgetToEmbed, SIGNAL(destroyed(QObject*)), this, SLOT(onDestroyed(QObject*)));
 	QTimer::singleShot(40, this, SLOT(delayedEmbed()));
 
-	FocusGuard::addGuardedWidget(widgetToEmbed);
-
-	_inputArea=FindChild(_embedded, "ChatInput");
 }
 
 void STWindowContainer::delayedEmbed()
 {
-	XReparentWindow(X11::XDisplay, _embedded->winId(), winId(),0,0);
-	_embedded->show();
+	FocusGuard::addGuardedWidget(_embedded);
+	_inputArea=FindChild(_embedded, "ChatInput");
+	_embedded->move(0, 0);
 	_embedded->resize(size());
-
+	_embedded->show();
 }
 
 void STWindowContainer::resizeEvent(QResizeEvent *event)

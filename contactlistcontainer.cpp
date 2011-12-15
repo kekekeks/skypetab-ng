@@ -45,7 +45,7 @@ void ContactListContainer::resizeEvent(QResizeEvent *event)
 
 void ContactListContainer::embedWindow(QWidget *window)
 {
-	window->setParent(this);
+	window->setParent(this, 0);
 
 	_embedded=window;
 	startTimer(50);

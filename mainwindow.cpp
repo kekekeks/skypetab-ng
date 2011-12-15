@@ -37,6 +37,7 @@ namespace skypetab
 STabMainWindow::STabMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+	_contacts=new ContactListContainer();
 	setMinimumSize(640,400);
 	_tabs=NULL;
 	_splitter=new QSplitter(this);
@@ -54,7 +55,7 @@ STabMainWindow::STabMainWindow(QWidget *parent) :
 	connect(_tabs, SIGNAL(currentChanged(int)),  this, SLOT(tabChanged(int)));
 	connect(_tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(tabCloseRequested(int)));
 
-	_contacts=new ContactListContainer();
+
 	_splitter->insertWidget(0, _contacts);
 	_splitter->setCollapsible(1, false);
 
@@ -83,6 +84,7 @@ STWindowContainer* STabMainWindow::AddTab(QWidget* w)
 
 void STabMainWindow::SetMainWindow(QWidget *tab)
 {
+
 	_contacts->embedWindow(tab);
 }
 
