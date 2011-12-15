@@ -139,6 +139,11 @@ void STabMainWindow::timerEvent(QTimerEvent *)
 	}
 	if(foundActive)
 		QApplication::alert(this);
+	if((_tabs->count()==0)&&contactsHidden())
+	{
+		_splitter->setSizes(getSizes(false));
+	}
+	_splitter->setCollapsible(0, (_tabs->count()!=0));
 	for(int i=0; i<_watchers.length();)
 	{
 		STWatcher*w=_watchers[i];
