@@ -133,9 +133,12 @@ void STabMainWindow::timerEvent(QTimerEvent *)
 			{
 				foundActive=true;
 			}
+
 		}
 		i++;
 	}
+	if(foundActive)
+		QApplication::alert(this);
 	for(int i=0; i<_watchers.length();)
 	{
 		STWatcher*w=_watchers[i];
