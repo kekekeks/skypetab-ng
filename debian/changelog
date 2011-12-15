@@ -1,3 +1,10 @@
+skypetab-ng (0.4.2-1) oneiric; urgency=low
+
+  * Fixed some Unity compatibility issues
+  * Fixed some problems with focus
+
+ -- Nikita Tsukanov <keks9n@gmail.com>  Thu, 15 Dec 2011 16:18:06 +0400
+
 skypetab-ng (0.4.1-7) oneiric; urgency=low
 
   * Removed build for amd64
