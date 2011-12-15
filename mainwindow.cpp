@@ -61,7 +61,7 @@ STabMainWindow::STabMainWindow(QWidget *parent) :
 
 
 
-	resize(640, 400);
+
 
 }
 

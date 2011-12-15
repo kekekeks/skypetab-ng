@@ -144,7 +144,6 @@ void SkypeTab::onTryShow(QWidget *widget)
 		if(title.contains("Skype")&&title.contains("Beta"))
 		{
 			_mainSkypeWindow=widget;
-			X11::Flush();
 			_instance->init();
 			_instance->mainWindow->SetMainWindow(widget);
 
