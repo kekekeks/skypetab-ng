@@ -54,6 +54,7 @@ void SkypeTab::init()
 	printf("Created main window\n");
 	mainWindow->show();
 	this->startTimer(50);
+	_stagingArea=(new QWidget())->winId();
 }
 
 
@@ -113,16 +114,8 @@ WId SkypeTab::onNewWindow()
 
 		if(0==strcmp(classname, *name))
 		{
-			STabMainWindow *mw=_instance->mainWindow;
-			mw->show();
-
-			X11::Flush();
-			_returnImmediately=true;
-			WId id=mw->AddTab(widget)->winId();
-			mw->activateWindow();
-			_returnImmediately=false;
-			return id;
-
+			_instance->_pendingWindows.append(widget);
+			return _instance->_stagingArea;
 		}
 		name++;
 	}
@@ -164,5 +157,21 @@ void SkypeTab::onTrayIcon()
 {
 		mainWindow->show();
 		mainWindow->activateWindow();
+}
+
+void SkypeTab::timerEvent(QTimerEvent *)
+{
+	while(_pendingWindows.length()!=0)
+	{
+		QWidget*widget=_pendingWindows[0];
+		_pendingWindows.removeAt(0);
+
+		mainWindow->show();
+		X11::Flush();
+
+		mainWindow->AddTab(widget);
+		mainWindow->activateWindow();
+
+	}
 }
 }

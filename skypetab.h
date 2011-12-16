@@ -17,6 +17,9 @@ class SkypeTab : public QObject
 	QMenu*_trayMenu;
 	QDialog*_aboutDialog;
 	void onTrayIcon();
+	QList<QWidget*> _pendingWindows;
+	virtual void timerEvent(QTimerEvent *);
+	WId _stagingArea;
 public:
     explicit SkypeTab(QObject *parent = 0);
 	static QWidget*_mainSkypeWindow;

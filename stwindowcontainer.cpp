@@ -70,6 +70,8 @@ void STWindowContainer::embedWindow(QWidget *widgetToEmbed)
 	_embedded=widgetToEmbed;
 	_embeddedAt=time(0);
 	connect(widgetToEmbed, SIGNAL(destroyed(QObject*)), this, SLOT(onDestroyed(QObject*)));
+	XReparentWindow(X11::XDisplay, _embedded->winId(), winId(),0,0);
+	X11::Flush();
 	QTimer::singleShot(40, this, SLOT(delayedEmbed()));
 
 }
