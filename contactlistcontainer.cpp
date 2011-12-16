@@ -83,4 +83,12 @@ QSize ContactListContainer::sizeHint() const
 {
 	return QSize(200, 300);
 }
+
+QString ContactListContainer::title()
+{
+	if(_embedded!=0)
+		return _embedded->windowTitle();
+	return QString("SkypeTab. [NOT INITIALIZED]");
+}
+
 }

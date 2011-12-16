@@ -174,6 +174,9 @@ void STabMainWindow::timerEvent(QTimerEvent *)
 		if(isActiveWindow())
 			container->setInputFocus();
 	}
+	else
+		setWindowTitle(_contacts->title());
+
 
 	if(windowIcon().cacheKey()!=wicon.cacheKey())
 		setWindowIcon(wicon);

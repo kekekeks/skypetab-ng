@@ -15,6 +15,7 @@ public:
 	void embedWindow (QWidget*window);
 	virtual void timerEvent(QTimerEvent * e);
 	virtual QSize sizeHint() const;
+	QString title();
 signals:
 	
 public slots:
