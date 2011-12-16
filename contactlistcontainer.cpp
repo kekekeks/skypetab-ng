@@ -70,6 +70,7 @@ void ContactListContainer::timerEvent(QTimerEvent *e)
 	if(_embedded!=NULL)
 	{
 		_embedded->move(0, 0);
+		_embedded->resize(size());
 		if(_embedded->isHidden())
 		{
 			SkypeTab::_instance->raiseTrayMenuActivated(QSystemTrayIcon::Trigger);
