@@ -39,7 +39,7 @@ SkypeTab::SkypeTab(QObject *parent) :
 	mainWindow=0;
 	AddSignalIntercept("QSystemTrayIcon", SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
 			this, SLOT(onTrayMenuActivated(QSystemTrayIcon::ActivationReason)),
-			SIGNAL(raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason)));
+			SIGNAL(_raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason)));
 }
 
 void SkypeTab::init()
@@ -153,6 +153,11 @@ void SkypeTab::onTryShow(QWidget *widget)
 
 		}
 	}
+}
+
+void SkypeTab::raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
+{
+	_raiseTrayMenuActivated(reason);
 }
 
 void SkypeTab::onTrayIcon()

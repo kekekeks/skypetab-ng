@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QResizeEvent>
 #include "contactlistcontainer.h"
 #include "focusguard.h"
+#include "skypetab.h"
 #include "x11.h"
 
 namespace skypetab
@@ -48,7 +49,7 @@ void ContactListContainer::embedWindow(QWidget *window)
 	window->setParent(this, 0);
 
 	_embedded=window;
-	startTimer(50);
+	startTimer(500);
 
 	show();
 	_embedded->move(0,0);
@@ -69,6 +70,10 @@ void ContactListContainer::timerEvent(QTimerEvent *e)
 	if(_embedded!=NULL)
 	{
 		_embedded->move(0, 0);
+		if(_embedded->isHidden())
+		{
+			SkypeTab::_instance->raiseTrayMenuActivated(QSystemTrayIcon::Trigger);
+		}
 	}
 	QWidget::timerEvent(e);
 }

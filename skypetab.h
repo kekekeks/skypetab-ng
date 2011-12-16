@@ -26,9 +26,9 @@ public:
 	static void tryInit();
 	STabMainWindow* mainWindow;
 	static void onTryShow(QWidget*widget);
-
+	void raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason reason);
 signals:
-	void raiseTrayMenuActivated (QSystemTrayIcon::ActivationReason reason);
+	void _raiseTrayMenuActivated (QSystemTrayIcon::ActivationReason reason);
 public slots:
 	void init();
 private slots:
