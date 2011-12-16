@@ -59,9 +59,12 @@ void SkypeTab::init()
 
 void SkypeTab::onMenuShow()
 {
+	if(_trayMenu==0)
+		return;
 	QList<QAction*> actions= _trayMenu->actions();
+	if(actions.length()==0)
+		return;
 	QMenu *myMenu=new QMenu("SkypeTab");
-
 	myMenu->addAction("About SkypeTab", _aboutDialog, SLOT(exec()));
 	_trayMenu->insertMenu(actions[actions.length()-1],myMenu);
 
@@ -81,6 +84,7 @@ void SkypeTab::onTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
 			_trayIcon=qobject_cast<QSystemTrayIcon*>(sender());
 			_trayMenu=_trayIcon->contextMenu();
 			connect(_trayMenu, SIGNAL(aboutToShow()),this, SLOT(onMenuShow()));
+			onMenuShow();
 		}
 	}
 }
