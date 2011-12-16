@@ -48,7 +48,7 @@ STabMainWindow::STabMainWindow(QWidget *parent) :
 	_splitter->addWidget(_tabs);
 	FocusGuard::addGuardedWidget(this);
 
-	startTimer(100);
+	startTimer(300);
 	activeWidget=0;
 	_tabs->setFocusPolicy(Qt::NoFocus);
 
@@ -123,9 +123,9 @@ void STabMainWindow::timerEvent(QTimerEvent *)
 			continue;
 		}
 		QString title=cont->getShortWindowTitle(15);
-		bool hasAlets=title.startsWith('*');
+		bool hasAlets=cont->hasAlerts();
 		QIcon icon=cont->widget()->windowIcon();
-		_tabs->setTabText(i, cont->getShortWindowTitle(15));
+		_tabs->setTabText(i, title);
 		_tabs->setTabIcon(i, icon);
 
 		if ((!foundActive)&&(0==strcmp (cont->widget()->metaObject()->className(), "Skype::ChatWindow")))

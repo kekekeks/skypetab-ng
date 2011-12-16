@@ -97,7 +97,10 @@ QString STWindowContainer::getWindowTitle()
 {
 	if((_embedded==0)||(_destroyed))
 		return "DESTROYED";
-	return X11::GetWindowName(_embedded->winId());
+	QString title=_embedded->windowTitle();
+	if(title.startsWith("[*]"))
+		title=title.right(title.length()-3);
+	return title;
 }
 
 QString STWindowContainer::getShortWindowTitle(int maxSize)
@@ -108,6 +111,13 @@ QString STWindowContainer::getShortWindowTitle(int maxSize)
 		title=title.left(maxSize-3).append("...");
 	}
 	return title;
+}
+
+bool STWindowContainer::hasAlerts()
+{
+	if((_embedded==0)||(_destroyed))
+		return false;
+	return _embedded->isWindowModified();
 }
 
 bool STWindowContainer::isDestroyed()

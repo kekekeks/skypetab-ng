@@ -20,6 +20,7 @@ public:
 	virtual void resizeEvent ( QResizeEvent * event );
 	QString getWindowTitle();
 	QString getShortWindowTitle(int maxSize);
+	bool hasAlerts();
 	bool isDestroyed();
 	bool isAvailable();
 	QWidget* widget();
