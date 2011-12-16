@@ -1,3 +1,9 @@
+skypetab-ng (0.4.4-2) oneiric; urgency=low
+
+  * Fixed some bugs and perfomance issues
+
+ -- Nikita Tsukanov <keks9n@gmail.com>  Sat, 17 Dec 2011 00:00:11 +0400
+
 skypetab-ng (0.4.3-1) oneiric; urgency=low
 
   * Now using new window embedding method. It should fix most problems with window managers
