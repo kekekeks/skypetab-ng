@@ -19,6 +19,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "skypetab.h"
+#include "settingsdialog.h"
 #include <QTimer>
 #include <QApplication>
 #include <QMouseEvent>
@@ -40,6 +41,10 @@ SkypeTab::SkypeTab(QObject *parent) :
 	AddSignalIntercept("QSystemTrayIcon", SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
 			this, SLOT(onTrayMenuActivated(QSystemTrayIcon::ActivationReason)),
 			SIGNAL(_raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason)));
+
+
+
+
 }
 
 void SkypeTab::init()
@@ -49,7 +54,10 @@ void SkypeTab::init()
 	mainWindow=new STabMainWindow();
 	_trayIcon=0;
 	_trayMenu=0;
-	_aboutDialog=new AboutDialog();
+	_myMenu=new QMenu("SkypeTab");
+	_myMenu->addAction("Settings", new SettingsDialog(), SLOT(execIt()));
+	_myMenu->addAction("About SkypeTab", new AboutDialog(), SLOT(exec()));
+
 
 	printf("Created main window\n");
 	mainWindow->show();
@@ -65,9 +73,8 @@ void SkypeTab::onMenuShow()
 	QList<QAction*> actions= _trayMenu->actions();
 	if(actions.length()==0)
 		return;
-	QMenu *myMenu=new QMenu("SkypeTab");
-	myMenu->addAction("About SkypeTab", _aboutDialog, SLOT(exec()));
-	_trayMenu->insertMenu(actions[actions.length()-1],myMenu);
+
+	_trayMenu->insertMenu(actions[actions.length()-1],_myMenu);
 
 }
 
@@ -96,9 +103,23 @@ bool SkypeTab::initialized=false;
 SkypeTab* SkypeTab::_instance=0;
 QWidget*SkypeTab::_mainSkypeWindow=0;
 static bool _returnImmediately=false;
+QSettings SkypeTab::settings("kekekeks","skypetab-ng");
+bool* SkypeTab::enabledTabClassesList=0;
+
+const char* SkypeTab::tabClassesList[][2]={
+	{"Skype::ChatWindow", "Chats"},
+	{"Skype::TransferWindow", "File transfers"},
+	{"",""},//default classes are above this line
+	{"Skype::CallWindow", "Calls"},
+{0,0}};
+
+
+
 WId SkypeTab::onNewWindow()
 {
 	tryInit();
+//	_instance->init();
+
 	QWidget*widget=WindowCreationInitiator;
 	if(widget==0)
 		return 0;
@@ -106,18 +127,27 @@ WId SkypeTab::onNewWindow()
 		return 0;
 	const QMetaObject* meta=widget->metaObject();
 
-	static const char*names[]={"Skype::ChatWindow", "Skype::TransferWindow", 0};
-	const char**name=names;
-	const char* classname=meta->className();
-	while(*name!=0)
-	{
 
-		if(0==strcmp(classname, *name))
+	loadEnabledTabClassesList();
+	const char* classname=meta->className();
+	printf("Creating window for %s\n", classname);
+
+	for(int c=0; tabClassesList[c][0]!=0; c++)
+	{
+		const char *name=tabClassesList[c][0];
+		if(0==strcmp(classname, name))
 		{
-			_instance->_pendingWindows.append(widget);
-			return _instance->_stagingArea;
+			QString keyName("tabClasses/");
+			keyName=keyName.append(classname);
+
+			if(enabledTabClassesList[c])
+			{
+				printf("%s is under control", classname);
+				_instance->_pendingWindows.append(widget);
+				return _instance->_stagingArea;
+			}
+			break;
 		}
-		name++;
 	}
 	return 0;
 
@@ -180,6 +210,31 @@ void SkypeTab::timerEvent(QTimerEvent *)
 		mainWindow->AddTab(widget);
 		mainWindow->activateWindow();
 
+	}
+}
+
+void SkypeTab::loadEnabledTabClassesList()
+{
+	if(enabledTabClassesList!=0)
+		return;
+	int cnt=0;
+	for(int c=0; tabClassesList[c][0]!=0; c++)
+		cnt++;
+	enabledTabClassesList=new bool[cnt];
+	bool isDefault=true;
+	for(int c=0; tabClassesList[c][0]!=0; c++)
+	{
+		const char *name=tabClassesList[c][0];
+		QString keyName("tabClasses/");
+		keyName=keyName.append(name);
+		bool enabled= (
+				((!settings.contains(keyName))&&isDefault) //If no setting for this entry, use default flag
+				||
+				(settings.value(keyName).toInt()==1)
+		);
+		enabledTabClassesList[c]=enabled;
+		if(name[0]==0)
+			isDefault=false;
 	}
 }
 }
