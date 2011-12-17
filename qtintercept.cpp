@@ -109,27 +109,9 @@ extern void QWidget::setVisible(bool visible)
 		memcpy(&realSetVisible, &ptr, sizeof(ptr));
 	}
 
+	SkypeTab::onTryShow(this);
 	if(parentWidget()==0)
-	{
-		SkypeTab::onTryShow(this);
-		if(parentWidget()==0)
-			winId(); //Force it to create a window _now_
-	}
-	// @restorer: begin of hacko-fix for gentoo
-	else if (!SkypeTab::_mainSkypeWindow)
-	{
-		QWidget* widg = parentWidget();
-
-		while (widg) {
-			if (!widg->parentWidget()) {
-				SkypeTab::onTryShow(widg);
-				break;
-			}
-
-			widg = widg->parentWidget();
-		}
-	}
-	// @restorer: end of hacko-fix for gentoo
+		winId(); //Force it to create a window _now_
 
 	(this->*realSetVisible)(visible);
 }

@@ -134,23 +134,25 @@ void SkypeTab::tryInit()
 
 void SkypeTab::onTryShow(QWidget *widget)
 {
-	// @restorer: begin of hacko-fix for gentoo
-	if (_mainSkypeWindow) {
+	if (_mainSkypeWindow)
 		return;
-	}
-	// @restorer: end of hacko-fix for gentoo
-
 	tryInit();
-	if(0==strcmp(widget->metaObject()->className(), "QWidget"))
-	{
-		QString title=widget->windowTitle();
-		if(title.contains("Skype")&&title.contains("Beta"))
-		{
-			_mainSkypeWindow=widget;
-			_instance->init();
-			_instance->mainWindow->SetMainWindow(widget);
 
+	//Walk on widget's hierarhy
+	while (widget)
+	{
+		if(0==strcmp(widget->metaObject()->className(), "QWidget"))
+		{
+			QString title=widget->windowTitle();
+			if(title.contains("Skype")&&title.contains("Beta"))
+			{
+				_mainSkypeWindow=widget;
+				_instance->init();
+				_instance->mainWindow->SetMainWindow(widget);
+				break;
+			}
 		}
+		widget=widget->parentWidget();
 	}
 }
 
