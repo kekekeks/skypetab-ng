@@ -94,7 +94,7 @@ void SkypeTab::onTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
 
 bool SkypeTab::initialized=false;
 SkypeTab* SkypeTab::_instance=0;
-QWidget*SkypeTab::_mainSkypeWindow;
+QWidget*SkypeTab::_mainSkypeWindow=0;
 static bool _returnImmediately=false;
 WId SkypeTab::onNewWindow()
 {
@@ -134,6 +134,12 @@ void SkypeTab::tryInit()
 
 void SkypeTab::onTryShow(QWidget *widget)
 {
+	// @restorer: begin of hacko-fix for gentoo
+	if (_mainSkypeWindow) {
+		return;
+	}
+	// @restorer: end of hacko-fix for gentoo
+
 	tryInit();
 	if(0==strcmp(widget->metaObject()->className(), "QWidget"))
 	{
