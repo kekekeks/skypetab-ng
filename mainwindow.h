@@ -31,6 +31,7 @@ protected:
 	bool contactsHidden();
 	virtual void closeEvent(QCloseEvent *);
 	void windowActivationChange(bool active);
+	bool eventFilter(QObject*obj, QEvent*ev);
 private:
 	QTabWidget* _tabs;
 	ContactListContainer* _contacts;

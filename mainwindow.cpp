@@ -60,7 +60,7 @@ STabMainWindow::STabMainWindow(QWidget *parent) :
 	_splitter->setCollapsible(1, false);
 
 
-
+	QApplication::instance()->installEventFilter(this);
 
 
 }
@@ -205,6 +205,57 @@ void STabMainWindow::windowActivationChange(bool active)
 			_tabs->currentWidget()->setFocus();
 	}
 	return QMainWindow::windowActivationChange(active);
+}
+
+bool STabMainWindow::eventFilter(QObject *obj, QEvent *ev)
+{
+	if(ev->type()==QEvent::KeyPress)
+	{
+		if(!obj->isWidgetType())
+			return false;
+		if(_tabs->count()<2)
+			return false;
+		QKeyEvent*kev=(QKeyEvent*)ev;
+		int action=0; // 1 - previous, 2 - next
+		if(kev->modifiers()&Qt::ControlModifier)
+		{
+			if(kev->key()==Qt::Key_Tab)
+				action=2;
+			if(kev->key()==Qt::Key_PageDown)
+				action=2;
+			if(kev->key()==Qt::Key_PageUp)
+				action=1;
+		}
+		if((kev->modifiers()&Qt::ShiftModifier)&&(kev->key()==Qt::Key_Tab))
+			action=1;
+		if(action==0)
+			return false;
+		QWidget *w=qobject_cast<QWidget*>(obj);
+		while(w->parentWidget()!=0)
+			w=w->parentWidget();
+		int index=-1;
+		for(int c=0; c<_tabs->count(); c++)
+			if(((STWindowContainer*)_tabs->widget(c))->widget()==w)
+			{
+				index=c;
+				break;
+			}
+
+		if(index==-1)
+			return 0;
+
+		if(action==2)
+			index++;
+		else if(action==1)
+			index--;
+		if(index<0)
+			index=_tabs->count()-1;
+		if(index>=_tabs->count())
+			index=0;
+		_tabs->setCurrentIndex(index);
+
+	}
+	return false;
 }
 
 
