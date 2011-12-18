@@ -42,12 +42,9 @@ SkypeTab::SkypeTab(QObject *parent) :
 			this, SLOT(onTrayMenuActivated(QSystemTrayIcon::ActivationReason)),
 			SIGNAL(_raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason)));
 
-
-
-
 }
 
-void SkypeTab::init()
+void SkypeTab::_stage2Init()
 {
 	if(mainWindow!=0)
 		return;
@@ -66,6 +63,27 @@ void SkypeTab::init()
 }
 
 
+void SkypeTab::stage1Init()
+{
+	static bool done=false;
+	if(done)
+		return;
+	done=true;
+	_instance=new SkypeTab();
+
+}
+
+void SkypeTab::stage2Init()
+{
+	static bool done=false;
+	if(done)
+		return;
+	done=true;
+	stage1Init();
+	_instance->_stage2Init();
+}
+
+
 void SkypeTab::onMenuShow()
 {
 	if(_trayMenu==0)
@@ -80,6 +98,7 @@ void SkypeTab::onMenuShow()
 
 void SkypeTab::onTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
 {
+	stage2Init();
 	if(reason!=QSystemTrayIcon::Context)
 	{
 		onTrayIcon();
@@ -99,10 +118,8 @@ void SkypeTab::onTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
 
 
 
-bool SkypeTab::initialized=false;
 SkypeTab* SkypeTab::_instance=0;
 QWidget*SkypeTab::_mainSkypeWindow=0;
-static bool _returnImmediately=false;
 QSettings SkypeTab::settings("kekekeks","skypetab-ng");
 bool* SkypeTab::enabledTabClassesList=0;
 
@@ -117,13 +134,10 @@ const char* SkypeTab::tabClassesList[][2]={
 
 WId SkypeTab::onNewWindow()
 {
-	tryInit();
-//	_instance->init();
+	//We should be completely initialized at this moment
 
 	QWidget*widget=WindowCreationInitiator;
 	if(widget==0)
-		return 0;
-	if(_returnImmediately)
 		return 0;
 	const QMetaObject* meta=widget->metaObject();
 
@@ -153,20 +167,11 @@ WId SkypeTab::onNewWindow()
 
 }
 
-void SkypeTab::tryInit()
-{
-	if(!initialized)
-	{
-		initialized=true;
-		_instance=new SkypeTab();
-	}
-}
-
 void SkypeTab::onTryShow(QWidget *widget)
 {
 	if (_mainSkypeWindow)
 		return;
-	tryInit();
+	stage2Init();
 
 	//Walk on widget's hierarhy
 	while (widget)
@@ -177,7 +182,7 @@ void SkypeTab::onTryShow(QWidget *widget)
 			if(title.contains("Skype")&&title.contains("Beta"))
 			{
 				_mainSkypeWindow=widget;
-				_instance->init();
+
 				_instance->mainWindow->SetMainWindow(widget);
 				break;
 			}
@@ -193,8 +198,9 @@ void SkypeTab::raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
 
 void SkypeTab::onTrayIcon()
 {
-		mainWindow->show();
-		mainWindow->activateWindow();
+	stage2Init();
+	mainWindow->show();
+	mainWindow->activateWindow();
 }
 
 void SkypeTab::timerEvent(QTimerEvent *)

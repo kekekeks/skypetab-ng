@@ -22,13 +22,16 @@ class SkypeTab : public QObject
 	QMenu*_myMenu;
 	static bool *enabledTabClassesList;
 	static void loadEnabledTabClassesList();
+
+
+	void _stage2Init();
 public:
     explicit SkypeTab(QObject *parent = 0);
 	static QWidget*_mainSkypeWindow;
-	static bool initialized;
 	static SkypeTab*_instance;
 	static WId onNewWindow ();
-	static void tryInit();
+	static void stage1Init();
+	static void stage2Init();
 	STabMainWindow* mainWindow;
 	static void onTryShow(QWidget*widget);
 	void raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason reason);
@@ -37,8 +40,7 @@ public:
 	static const char*tabClassesList[][2];
 signals:
 	void _raiseTrayMenuActivated (QSystemTrayIcon::ActivationReason reason);
-public slots:
-	void init();
+
 private slots:
 	void onMenuShow();
 	void onTrayMenuActivated (QSystemTrayIcon::ActivationReason reason);
