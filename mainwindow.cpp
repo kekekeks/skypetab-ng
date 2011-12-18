@@ -271,6 +271,8 @@ void STabMainWindow::tabChangedAfterShock()
 void STabMainWindow::tabCloseRequested(int index)
 {
 	STWindowContainer* cont=qobject_cast<STWindowContainer*>(_tabs->widget(index));
+	cont->widget()->close();
+	return;
 	QWidget *target=cont->inputArea();
 	if(target==0)
 		target=cont->widget();

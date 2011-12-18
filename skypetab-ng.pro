@@ -20,7 +20,8 @@ SOURCES += \
     contactlistcontainer.cpp \
     focusguard.cpp \
     aboutdialog.cpp \
-    qtintercept.cpp
+    qtintercept.cpp \
+    settingsdialog.cpp
 
 HEADERS +=\
     mainwindow.h \
@@ -31,7 +32,8 @@ HEADERS +=\
     contactlistcontainer.h \
     focusguard.h \
     aboutdialog.h \
-    qintercept.h
+    qintercept.h \
+    settingsdialog.h
 
 unix:
 {
@@ -49,4 +51,5 @@ unix:
    INSTALLS += launcher
 }
 FORMS += \
-    aboutdialog.ui
+    aboutdialog.ui \
+    settingsdialog.ui
