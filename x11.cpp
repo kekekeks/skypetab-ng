@@ -26,50 +26,6 @@ namespace X11
 {
 
 	Display* XDisplay;
-
-	QString GetStringAtom(Window win, Atom atom)
-	{
-		static Atom utf8Atom=0;
-		if(utf8Atom==0)
-		{
-			utf8Atom=XInternAtom(XDisplay, "UTF8_STRING",0);
-		}
-
-		Atom typeReturned;
-		int formatReturned;
-		unsigned long nitemsReturned, unused;
-		unsigned char*ret;
-		if (XGetWindowProperty(XDisplay, win, atom,
-			0, 1024, false, utf8Atom, &typeReturned,
-			&formatReturned, &nitemsReturned, &unused, &ret)
-			 == Success)
-		{
-			return QString::fromUtf8((char*)ret, (formatReturned/8)*nitemsReturned);
-		}
-		return QString("ERROR");
-	}
-
-	QString GetWindowName(Window window)
-	{
-		static Atom _NET_WM_NAME=0;
-		if(_NET_WM_NAME==0)
-		{
-			_NET_WM_NAME=XInternAtom(XDisplay, "_NET_WM_NAME",0);
-		}
-		return GetStringAtom(window, _NET_WM_NAME);
-
-	}
-	QList<Window> GetChildren(Window window)
-	{
-		Window root, parent;
-		Window*children;
-		unsigned int nchildren=0;
-		XQueryTree(XDisplay, window,&root, &parent, &children, &nchildren);
-		QList<Window> rv;
-		for(unsigned int c=0; c<nchildren;c++)
-			rv.append(children[c]);
-		return rv;
-	}
 	void Flush()
 	{
 		XFlush(XDisplay);

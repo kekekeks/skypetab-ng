@@ -50,19 +50,8 @@ void ContactListContainer::embedWindow(QWidget *window)
 
 	_embedded=window;
 	startTimer(500);
-
-	show();
 	_embedded->move(0,0);
-	/*
-	if(_container!=NULL)
-		delete _container;
-	_container=new STWindowContainer();
-	_container->setParent(this);
 	show();
-	_container->show();
-	X11::Flush();
-	_container->embedWindow(window);
-	*/
 }
 
 void ContactListContainer::timerEvent(QTimerEvent *e)

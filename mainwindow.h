@@ -24,7 +24,6 @@ public:
 	STWindowContainer *AddTab(QWidget *tab);
 	void SetMainWindow(QWidget *tab);
 	QWidget *activeWidget;
-	virtual bool event(QEvent *event);
 	void toggleContacts();
 protected:
 	void timerEvent(QTimerEvent*);

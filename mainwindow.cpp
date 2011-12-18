@@ -88,16 +88,6 @@ void STabMainWindow::SetMainWindow(QWidget *tab)
 	_contacts->embedWindow(tab);
 }
 
-bool STabMainWindow::event(QEvent *event)
-{
-	/*
-	if((_tabs!=NULL)&&(_tabs->currentIndex()!=-1))
-	{
-		_tabs->currentWidget()->event(event);
-	}
-	*/
-	return QMainWindow::event(event);
-}
 
 void STabMainWindow::toggleContacts()
 {
