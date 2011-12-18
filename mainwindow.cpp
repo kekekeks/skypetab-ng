@@ -323,13 +323,5 @@ void STabMainWindow::tabCloseRequested(int index)
 {
 	STWindowContainer* cont=qobject_cast<STWindowContainer*>(_tabs->widget(index));
 	cont->widget()->close();
-	return;
-	QWidget *target=cont->inputArea();
-	if(target==0)
-		target=cont->widget();
-	QKeyEvent ev (QEvent::KeyPress, Qt::Key_W, Qt::ControlModifier, "w");
-	QKeyEvent ev2 (QEvent::KeyRelease, Qt::Key_W, Qt::ControlModifier, "w");
-	target->keyPressEvent(&ev);
-	target->keyPressEvent(&ev2);
 }
 }
