@@ -197,6 +197,16 @@ void STabMainWindow::closeEvent(QCloseEvent *ev)
 	ev->accept();
 }
 
+void STabMainWindow::windowActivationChange(bool active)
+{
+	if(active&&(FocusGuard::lastManualFocusChangeTime<time(0)-2))
+	{
+		if(_tabs->count())
+			_tabs->currentWidget()->setFocus();
+	}
+	return QMainWindow::windowActivationChange(active);
+}
+
 
 QList<int> STabMainWindow::getSizes(bool contactsHidden, QSize*newSize)
 {

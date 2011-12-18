@@ -15,7 +15,7 @@ class FocusGuard : public QObject
 	explicit FocusGuard();
 	void init();
 public:
-
+	static time_t lastManualFocusChangeTime;
 	virtual bool eventFilter(QObject *obj, QEvent *event);
 	static void addGuardedWidget(QWidget*widget);
 signals:

@@ -42,7 +42,7 @@ void FocusGuard::init()
 	}
 }
 FocusGuard FocusGuard::_instance;
-
+time_t FocusGuard::lastManualFocusChangeTime=0;
 bool FocusGuard::eventFilter(QObject *obj, QEvent *event)
 {
 	if(event->type()==QEvent::MouseButtonPress)
@@ -58,6 +58,7 @@ bool FocusGuard::eventFilter(QObject *obj, QEvent *event)
 		if(parent==0)
 			return false;
 		w=qobject_cast<QWidget*>(parent);
+		lastManualFocusChangeTime=time(0);
 		XSetInputFocus(X11::XDisplay, w->winId(), RevertToNone, CurrentTime);
 
 	}
