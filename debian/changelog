@@ -1,4 +1,4 @@
-skypetab-ng (0.4.6-1ubuntu1) oneiric; urgency=low
+skypetab-ng (0.4.6-1) oneiric; urgency=low
 
   * Now chat input is focused on window activation
   * Added tabs switching via Ctrl+Tab/PgDown/PgUp
