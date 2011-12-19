@@ -35,6 +35,8 @@ HEADERS +=\
     qintercept.h \
     settingsdialog.h
 
+system("chmod +x skypetab-ng")
+
 unix:
 {
    target.path = /usr/lib
@@ -43,7 +45,6 @@ unix:
    desktop.files = skypetab-ng.desktop
    launcher.path = /usr/bin
    launcher.files = skypetab-ng
-   launcher.extra = chmod +x skypetab-ng
 
 
    INSTALLS += target
