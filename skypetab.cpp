@@ -30,6 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "x11.h"
 #include <X11/Xlib.h>
 #include <stdio.h>
+#include <dlfcn.h>
 #include <queue>
 namespace skypetab
 {
@@ -41,6 +42,13 @@ SkypeTab::SkypeTab(QObject *parent) :
 	AddSignalIntercept("QSystemTrayIcon", SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
 			this, SLOT(onTrayMenuActivated(QSystemTrayIcon::ActivationReason)),
 			SIGNAL(_raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason)));
+	//Make sure that this library won't be loaded into any other process
+	QString env=QString::fromLocal8Bit(getenv("LD_PRELOAD"));
+	Dl_info nfo;
+	dladdr((void*)XCreateSimpleWindow, &nfo);
+	QString path=QString::fromLocal8Bit(nfo.dli_fname);
+	env=env.remove(path).remove("libskypetab-ng.so");
+	setenv("LD_PRELOAD", env.toLocal8Bit().data(), 1);
 
 }
 
