@@ -32,6 +32,8 @@ protected:
 	virtual void closeEvent(QCloseEvent *);
 	void windowActivationChange(bool active);
 	bool eventFilter(QObject*obj, QEvent*ev);
+	void setVisible(bool visible);
+	void changeEvent(QEvent *);
 private:
 	QTabWidget* _tabs;
 	ContactListContainer* _contacts;

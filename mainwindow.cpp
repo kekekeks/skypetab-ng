@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtDebug>
 #include <focusguard.h>
 #include "x11.h"
-
+#include "skypetab.h"
 namespace skypetab
 {
 
@@ -176,6 +176,8 @@ void STabMainWindow::timerEvent(QTimerEvent *)
 void STabMainWindow::resizeEvent(QResizeEvent *event)
 {
 	QSize s=event->size();
+	SkypeTab::settings.setValue("window/geometry",QVariant::fromValue(geometry()));
+
 	QList<int> ss=getSizes(contactsHidden(), &s);
 	_splitter->resize(s);
 	_splitter->setSizes(ss);
@@ -256,6 +258,47 @@ bool STabMainWindow::eventFilter(QObject *obj, QEvent *ev)
 
 	}
 	return false;
+}
+
+void STabMainWindow::setVisible(bool visible)
+{
+	if(visible)
+	{
+		if(!this->isVisible())
+		{
+			bool maximized=SkypeTab::settings.value(tr("window/maximized"), QVariant::fromValue(false)).toBool();
+			QVariant _geo=SkypeTab::settings.value("window/geometry");
+			if(_geo.isValid())
+			{
+				setGeometry(_geo.toRect());
+			}
+			if(maximized)
+			{
+				setWindowState(Qt::WindowMaximized);
+			}
+			QMainWindow::setVisible(true);
+		}
+		QApplication::setActiveWindow(this);
+	}
+	else
+		QMainWindow::setVisible(false);
+}
+
+void STabMainWindow::changeEvent(QEvent *ev)
+{
+	QMainWindow::changeEvent(ev);
+	if(ev->type()==QEvent::WindowStateChange)
+	{
+		if(!isVisible())
+			return;
+		SkypeTab::settings.setValue("window/maximized", isMaximized());
+		if(isMaximized())
+		{
+			QRect normal=normalGeometry();
+			SkypeTab::settings.setValue("window/geometry",QVariant::fromValue(normal));
+		}
+
+	}
 }
 
 
