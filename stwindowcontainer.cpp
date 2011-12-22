@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "x11.h"
 #include <stdio.h>
 #include <X11/Xlib.h>
+
 namespace skypetab
 {
 STWindowContainer::STWindowContainer(QWidget *parent) :
@@ -46,6 +47,9 @@ STWindowContainer::STWindowContainer(QWidget *parent) :
 
 void STWindowContainer::setInputFocus()
 {
+	// emulate blur and focus
+	XSetInputFocus(X11::XDisplay, this->winId(), RevertToNone, CurrentTime);
+	XSetInputFocus(X11::XDisplay, _embedded->winId(), RevertToNone, CurrentTime);
 }
 
 QWidget* FindChild(QWidget *widget, const char *className)
