@@ -14,7 +14,6 @@ class STWindowContainer : public QWidget
 public:
 
 	explicit STWindowContainer(QWidget* parent=0);
-	void setInputFocus();
 	void embedWindow (QWidget* widgetToEmbed);
 
 	virtual void resizeEvent ( QResizeEvent * event );

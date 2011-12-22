@@ -161,8 +161,6 @@ void STabMainWindow::timerEvent(QTimerEvent *)
 	{
 		STWindowContainer *container=(STWindowContainer*)_tabs->currentWidget();
 		setWindowTitle(container->getWindowTitle());
-		if(isActiveWindow())
-			container->setInputFocus();
 	}
 	else
 		setWindowTitle(_contacts->title());

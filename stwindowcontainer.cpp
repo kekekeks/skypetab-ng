@@ -44,9 +44,6 @@ STWindowContainer::STWindowContainer(QWidget *parent) :
 	setAcceptDrops(true);
 }
 
-void STWindowContainer::setInputFocus()
-{
-}
 
 QWidget* FindChild(QWidget *widget, const char *className)
 {
