@@ -2,7 +2,7 @@
 #define SETTINGSDIALOG_H
 
 #include <QDialog>
-
+#include <QBoxLayout>
 namespace Ui {
 class SettingsDialog;
 }
@@ -18,6 +18,7 @@ public:
 	
 private:
 	Ui::SettingsDialog *ui;
+	void addSettingsCheckbox(QBoxLayout*layout, QString title, QString setting, bool defValue);
 protected:
 
 public slots:

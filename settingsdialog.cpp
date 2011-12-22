@@ -24,6 +24,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 		{
 			QString keyName("tabClasses/");
 			keyName=keyName.append(name);
+
+			addSettingsCheckbox(layout,QString::fromAscii(SkypeTab::tabClassesList[c][1]),keyName, isDefault);
+			/*
 			bool isChecked=(
 					((!SkypeTab::settings.contains(keyName))&&isDefault) //If no setting for this entry, use default flag
 					||
@@ -35,17 +38,37 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 			layout->addWidget(cb);
 			connect(cb, SIGNAL(stateChanged(int)), this, SLOT(namedCheckboxChanged(int)));
 			cb->show();
+			*/
 		}
-
-
 	}
-
+	group=findChild<QWidget*>("startOptions");
+	layout=new QBoxLayout(QBoxLayout::TopToBottom);
+	group->setLayout(layout);
+	addSettingsCheckbox(layout, "Don't show window at start", "startup/hidden", false);
+	this->resize(width(), minimumHeight());
 }
 
 SettingsDialog::~SettingsDialog()
 {
 	delete ui;
 }
+
+void SettingsDialog::addSettingsCheckbox(QBoxLayout *layout, QString title, QString keyName, bool isDefault)
+{
+	bool isChecked=(
+			((!SkypeTab::settings.contains(keyName))&&isDefault) //If no setting for this entry, use default flag
+			||
+			(SkypeTab::settings.value(keyName).toInt()==1)
+	);
+	QCheckBox* cb=new QCheckBox(title);
+	cb->setChecked(isChecked);
+	cb->setObjectName(keyName);
+	layout->addWidget(cb);
+	connect(cb, SIGNAL(stateChanged(int)), this, SLOT(namedCheckboxChanged(int)));
+	cb->show();
+}
+
+
 
 void SettingsDialog::execIt()
 {

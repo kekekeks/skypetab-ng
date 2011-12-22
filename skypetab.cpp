@@ -65,7 +65,8 @@ void SkypeTab::_stage2Init()
 
 
 	printf("Created main window\n");
-	mainWindow->show();
+	if(!settings.value("startup/hidden", QVariant::fromValue(false)).toBool())
+		mainWindow->show();
 	this->startTimer(50);
 	_stagingArea=(new QWidget())->winId();
 }
