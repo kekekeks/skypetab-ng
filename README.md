@@ -16,6 +16,6 @@ Then you will be able to start SkypeTab using LD_PRELOAD=\`pwd\`/libskypetab.so 
 Note, LD_PRELOAD requires full path to the library
 
 
-Coding "guidlines"
+Coding "guidelines"
 ==========================
 If you want to participate, please, use tabs for indention and spaces for formatting. Thank you.
