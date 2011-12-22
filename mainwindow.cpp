@@ -253,7 +253,7 @@ bool STabMainWindow::eventFilter(QObject *obj, QEvent *ev)
 		if(index>=_tabs->count())
 			index=0;
 		_tabs->setCurrentIndex(index);
-
+                return true;
 	}
 	return false;
 }
