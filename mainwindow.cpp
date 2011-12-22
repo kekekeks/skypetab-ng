@@ -45,6 +45,7 @@ STabMainWindow::STabMainWindow(QWidget *parent) :
 	_tabs=new QTabWidget();
 	_tabs->setTabsClosable(true);
 	_tabs->setMinimumWidth(300);
+	_tabs->setMovable(true);	// @restorer
 	_splitter->addWidget(_tabs);
 	FocusGuard::addGuardedWidget(this);
 
