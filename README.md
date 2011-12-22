@@ -14,3 +14,8 @@ Run qmake -spec linux-g++-32 && make
 Then you will be able to start SkypeTab using LD_PRELOAD=\`pwd\`/libskypetab.so skype
 
 Note, LD_PRELOAD requires full path to the library
+
+
+Coding "guidlines"
+==========================
+If you want to participate, please, use tabs for indention and spaces for formatting. Thank you.
