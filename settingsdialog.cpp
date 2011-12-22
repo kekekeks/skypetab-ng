@@ -3,6 +3,8 @@
 #include "skypetab.h"
 #include <QCheckBox>
 #include <QMessageBox>
+#include <QFile>
+#include <stdio.h>
 namespace skypetab
 {
 SettingsDialog::SettingsDialog(QWidget *parent) :
@@ -46,6 +48,14 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	group->setLayout(layout);
 	addSettingsCheckbox(layout, "Don't show window at start", "startup/hidden", false);
 	addSettingsCheckbox(layout, "Activate previous instance", "startup/activate", false);
+
+	autostartPath=QString(getenv("HOME"));
+	autostartPath=autostartPath.append("/.config/autostart/skypetab.desktop");
+	QCheckBox*cb=new QCheckBox("Start automatically");
+	cb->setChecked(QFile::exists(autostartPath));
+	cb->setObjectName("autostart");
+	layout->addWidget(cb);
+
 	this->resize(width(), minimumHeight());
 }
 
@@ -74,6 +84,18 @@ void SettingsDialog::addSettingsCheckbox(QBoxLayout *layout, QString title, QStr
 void SettingsDialog::execIt()
 {
 	QDialog::exec();
+	QCheckBox*cb=findChild<QCheckBox*>("autostart");
+	if(cb->isChecked())
+	{
+		FILE*file=fopen(autostartPath.toLocal8Bit().data(), "w");
+		fprintf(file,"[Desktop Entry]\nEncoding=UTF-8\nName=SkypeTab\nComment=A program that adds tabs to Skype\nIcon=skype\nType=Application\nExec=skypetab-ng\nStartupNotify=False\nTerminal=false");
+		fclose(file);
+	}
+	else
+	{
+		QFile::remove(autostartPath);
+	}
+
 	QMessageBox msgbox("SkypeTab", "Changes will take effect after the next start of Skype™",
 					   QMessageBox::Information,0,0,0);
 	msgbox.exec();
