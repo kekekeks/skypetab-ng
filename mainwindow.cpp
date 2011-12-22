@@ -226,40 +226,40 @@ bool STabMainWindow::eventFilter(QObject *obj, QEvent *ev)
 			if(kev->key()==Qt::Key_PageUp)
 				action=1;
 		}
-                // back/forward buttons on thinkpad keyboard
-                if (kev->key() == Qt::Key_Back)
-                        action=1;
-                if (kev->key() == Qt::Key_Forward)
-                        action=2;
+		// back/forward buttons on thinkpad keyboard
+		if (kev->key() == Qt::Key_Back)
+                	action=1;
+		if (kev->key() == Qt::Key_Forward)
+                	action=2;
 
-                // C-S-Tab to backward
+		// C-S-Tab to backward
 		if((kev->modifiers()&Qt::ControlModifier)&&(kev->key()==Qt::Key_Backtab))
-                        action = 1;
+			action = 1;
 
 		int index=-1;
-                // alt-<number> to switch certain tab
-                if (kev->modifiers()&Qt::AltModifier) {
-                  if ((kev->key() >= Qt::Key_1) && (kev->key() <= Qt::Key_9)) {
-                    action = 3;
-                    index = kev->key() - 0x30 - 1;
-                  }
-                }
+		// alt-<number> to switch certain tab
+		if (kev->modifiers()&Qt::AltModifier) {
+			if ((kev->key() >= Qt::Key_1) && (kev->key() <= Qt::Key_9)) {
+				action = 3;
+				index = kev->key() - 0x30 - 1;
+			}
+		}
 
 		if(action==0)
 			return false;
 
-                if (index < 0) {
-                        // if we haven't got tab index yet
-                        QWidget *w=qobject_cast<QWidget*>(obj);
-                        while(w->parentWidget()!=0)
-                                w=w->parentWidget();
-                        for(int c=0; c<_tabs->count(); c++)
-                                if(((STWindowContainer*)_tabs->widget(c))->widget()==w)
-                                  {
-                                      index=c;
-                                      break;
-                                  }
-                }
+		if (index < 0) {
+			// if we haven't got tab index yet
+			QWidget *w=qobject_cast<QWidget*>(obj);
+			while(w->parentWidget()!=0)
+				w=w->parentWidget();
+			for(int c=0; c<_tabs->count(); c++)
+				if(((STWindowContainer*)_tabs->widget(c))->widget()==w)
+				{
+					index=c;
+					break;
+				}
+		}
 
 		if(index==-1)
 			return 0;
@@ -270,12 +270,12 @@ bool STabMainWindow::eventFilter(QObject *obj, QEvent *ev)
 			index--;
 		if(index<0)
 			index=_tabs->count()-1;
-                // don't cycle tabs on alt-num shortcut
+		// don't cycle tabs on alt-num shortcut
 		if((action != 3) && (index>=_tabs->count()))
 			index=0;
 
 		_tabs->setCurrentIndex(index);
-                return true;
+		return true;
 	}
 	return false;
 }
