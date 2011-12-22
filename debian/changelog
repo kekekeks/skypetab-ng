@@ -1,3 +1,11 @@
+skypetab-ng (0.4.8-1) oneiric; urgency=low
+
+  * Now it remembers it's last window position
+  * Added some options that are useful for autostart
+  * Added tab switching using Alt+1-9 keys
+
+ -- Nikita Tsukanov <keks9n@gmail.com>  Thu, 22 Dec 2011 18:18:35 +0400
+
 skypetab-ng (0.4.7-1) oneiric; urgency=high
 
   * Clear LD_PRELOAD to prevent libskypetab-ng from loading to processes other than skype
