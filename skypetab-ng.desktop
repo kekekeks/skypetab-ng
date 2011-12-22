@@ -2,7 +2,7 @@
 Name=SkypeTab
 Comment=SkypeTab
 Exec=skypetab-ng
-Icon=skype.png
+Icon=skype
 Terminal=0
 Type=Application
 Encoding=UTF-8
