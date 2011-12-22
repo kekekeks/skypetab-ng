@@ -50,22 +50,7 @@ WId FindXWindow(WId parent)
 	XFree(children);
 	return ret;
 }
-/*
-typedef struct {
-	int type;
-	unsigned long serial;
-	Bool send_event;
-	Display *display;
-	Window window;
-	Atom message_type;
-	int format;
-	union {
-		char b[20];
-		short s[10];
-		long l[5];
-		} data;
-} XClientMessageEvent;
-*/
+
 bool skypetab::SingleInstance::activatePreviousInstance()
 {
 	//Make sure that we have X11 display handle
