@@ -32,6 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <dlfcn.h>
 #include <queue>
+#include "singleinstance.h"
 namespace skypetab
 {
 
@@ -79,7 +80,11 @@ void SkypeTab::stage1Init()
 		return;
 	done=true;
 	_instance=new SkypeTab();
-
+	if((settings.value("startup/activate", QVariant::fromValue(false)).toBool()) &&
+				SingleInstance::activatePreviousInstance())
+		exit(0);
+	else
+		SingleInstance::createWatcher();
 }
 
 void SkypeTab::stage2Init()

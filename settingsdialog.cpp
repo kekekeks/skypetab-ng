@@ -45,6 +45,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	layout=new QBoxLayout(QBoxLayout::TopToBottom);
 	group->setLayout(layout);
 	addSettingsCheckbox(layout, "Don't show window at start", "startup/hidden", false);
+	addSettingsCheckbox(layout, "Activate previous instance", "startup/activate", false);
 	this->resize(width(), minimumHeight());
 }
 
