@@ -45,6 +45,8 @@ FocusGuard FocusGuard::_instance;
 time_t FocusGuard::lastManualFocusChangeTime=0;
 bool FocusGuard::eventFilter(QObject *obj, QEvent *event)
 {
+	if(lastManualFocusChangeTime==time(0))
+		return false;
 	if(event->type()==QEvent::MouseButtonPress)
 	{
 		QWidget *w=qobject_cast<QWidget*>(obj);
