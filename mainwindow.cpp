@@ -337,7 +337,8 @@ void STabMainWindow::changeEvent(QEvent *ev)
 			QRect normal=normalGeometry();
 			SkypeTab::settings.setValue("window/geometry",QVariant::fromValue(normal));
 		}
-
+		if(windowState()&Qt::WindowActive)
+			windowActivationChange(true);
 	}
 }
 

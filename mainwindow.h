@@ -31,7 +31,7 @@ protected:
 	virtual void resizeEvent(QResizeEvent *event);
 	bool contactsHidden();
 	virtual void closeEvent(QCloseEvent *);
-	void windowActivationChange(bool active);
+	virtual void windowActivationChange(bool active);
 	bool eventFilter(QObject*obj, QEvent*ev);
 	void setVisible(bool visible);
 	void changeEvent(QEvent *);

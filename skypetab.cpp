@@ -107,7 +107,7 @@ bool SkypeTab::onWindowActivation(QWidget *widget)
 	{
 		QApplication::setActiveWindow(widget);
 		X11::Flush();
-		X11::Sync(true);
+		X11::Sync(false);
 		return false;
 	}
 	return true;
