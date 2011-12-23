@@ -150,6 +150,8 @@ void STWindowContainer::setInputFocus()
 		return;
 	XSetInputFocus(X11::XDisplay, this->winId(), RevertToNone, CurrentTime);
 	XSetInputFocus(X11::XDisplay, _embedded->winId(), RevertToNone, CurrentTime);
+	QApplication::setActiveWindow(_embedded);
+	X11::Sync(true);
 }
 
 void STWindowContainer::focusInEvent(QFocusEvent *)
