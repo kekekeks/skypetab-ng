@@ -13,3 +13,4 @@ cp ../skypetab-ng.spec rpmbuild/SPECS
 echo Building
 rpmbuild -bs ../skypetab-ng.spec --buildroot `pwd`/build/ --define='%_topdir %(echo `pwd`)/rpmbuild'
 cp rpmbuild/SRPMS/* ../skypetab-ng.src.rpm
+rm -rf tmprpm
