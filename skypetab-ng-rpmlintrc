@@ -1,1 +1,3 @@
-addFilter("library-without-ldconfig-postin library-without-ldconfig-postun shlib-policy-name-error")
+setBadness('library-without-ldconfig-postin', 0)
+setBadness('library-without-ldconfig-postun', 0)
+setBadness('shlib-policy-name-error', 0)
