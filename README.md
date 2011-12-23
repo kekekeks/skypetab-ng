@@ -1,8 +1,6 @@
 SkypeTab is a program that adds tabs to Skype™ for Linux.
 
-[Project page](http://keks-n.net/skypetab)
-
-[PPA repository](https://launchpad.net/~keks9n/+archive/skypetab)
+[Project page](http://keks-n.net/skypetab) (description, demo, repositories, etc).
 
 Compilation & Installation
 ==========================
