@@ -80,6 +80,7 @@ STWindowContainer* STabMainWindow::AddTab(QWidget* w)
 
 	c->embedWindow(w);
 
+	QTimer::singleShot(250, this, SLOT(tabChangedAfterShock()));
 	return c;
 }
 
