@@ -18,9 +18,11 @@ BuildRequires: libX11-devel
 %define QMAKE /usr/lib/qt4/bin/qmake-qt4
 %endif
 BuildRequires: qt-devel
+BuildRequires: gcc-c++
 AutoReq:        no
 BuildArch:      noarch
 %global _binaries_in_noarch_packages_terminate_build 0
+%global __os_install_post %(echo '%{__os_install_post}' | sed -e 's!/usr/lib[^[:space:]]*/brp-desktop[[:space:]].*$!!g')
 %description
 This program adds tabs to Skype™ for Linux
 
