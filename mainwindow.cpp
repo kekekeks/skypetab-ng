@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <focusguard.h>
 #include "x11.h"
 #include "skypetab.h"
+
 namespace skypetab
 {
 
@@ -225,8 +226,10 @@ void STabMainWindow::windowActivationChange(bool active)
 {
 	if(active&&(FocusGuard::lastManualFocusChangeTime<time(0)-2))
 	{
-		if(_tabs->count())
+		if(_tabs->count()) {
 			_tabs->currentWidget()->setFocus();
+			((STWindowContainer*)(_tabs->currentWidget()))->setInputFocus();
+		}
 	}
 	return QMainWindow::windowActivationChange(active);
 }
