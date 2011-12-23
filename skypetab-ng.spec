@@ -10,7 +10,13 @@ Source: skypetab-ng.tar.gz
 URL: http://keks-n.net/skypetab
 Version: %{version} 
 Buildroot: /tmp/skypetab-ng 
+%if 0%{?suse_version}
+BuildRequires: xorg-x11-libX11-devel
+%define QMAKE qmake
+%else
 BuildRequires: libX11-devel
+%define QMAKE /usr/lib/qt4/bin/qmake-qt4
+%endif
 BuildRequires: qt-devel
 AutoReq:        no
 BuildArch:      noarch
@@ -21,7 +27,7 @@ This program adds tabs to Skype™ for Linux
 %prep 
 %setup -q
 %build
-qmake -spec linux-g++-32
+%{QMAKE} -spec linux-g++-32
 make
 
 %install 
