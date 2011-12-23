@@ -14,7 +14,8 @@ class AboutDialog : public QDialog
 public:
 	explicit AboutDialog(QWidget *parent = 0);
 	~AboutDialog();
-	
+public slots:
+	void link(const QString &qsLink);
 private:
 	Ui::AboutDialog *ui;
 };

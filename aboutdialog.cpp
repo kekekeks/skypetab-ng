@@ -21,16 +21,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
-
+#include <QDesktopServices>
+#include <QUrl>
 AboutDialog::AboutDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::AboutDialog)
 {
 	ui->setupUi(this);
-
+	QLabel*lbl=findChild<QLabel*>("label");
+	connect(lbl, SIGNAL(linkActivated(QString)), SLOT(link(QString)));
 }
 
 AboutDialog::~AboutDialog()
 {
 	delete ui;
+}
+
+void AboutDialog::link(const QString &qsLink)
+{
+	QDesktopServices::openUrl(QUrl(qsLink));
 }
