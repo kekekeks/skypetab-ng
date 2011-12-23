@@ -103,7 +103,14 @@ bool SkypeTab::onWindowActivation(QWidget *widget)
 	while(widget->parentWidget())
 		widget=widget->parentWidget();
 	QString cl=QString::fromLocal8Bit(widget->metaObject()->className());
-	return !_instance->mainWindow->activateTab(widget);
+	if(_instance->mainWindow->activateTab(widget))
+	{
+		QApplication::setActiveWindow(widget);
+		X11::Flush();
+		X11::Sync(true);
+		return false;
+	}
+	return true;
 }
 
 
