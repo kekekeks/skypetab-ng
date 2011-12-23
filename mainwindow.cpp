@@ -38,6 +38,7 @@ namespace skypetab
 STabMainWindow::STabMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+	setFocusPolicy(Qt::StrongFocus);
 	_contacts=new ContactListContainer();
 	setMinimumSize(640,400);
 	_tabs=NULL;
@@ -81,7 +82,6 @@ STWindowContainer* STabMainWindow::AddTab(QWidget* w)
 
 	c->embedWindow(w);
 
-	QTimer::singleShot(250, this, SLOT(tabChangedAfterShock()));
 	return c;
 }
 
@@ -102,11 +102,9 @@ bool STabMainWindow::activateTab(QWidget *widget)
 	int index=findTab(widget);
 	if(index!=-1)
 	{
-		bool manualEvent=true;
 		if(index!=_tabs->currentIndex())
 		{
 			_tabs->setCurrentIndex(index);
-			bool manualEvent=false;
 		}
 		this->show();
 		_tabs->widget(index)->setFocus();
@@ -222,18 +220,6 @@ void STabMainWindow::closeEvent(QCloseEvent *ev)
 	ev->accept();
 }
 
-void STabMainWindow::windowActivationChange(bool active)
-{
-	if(active&&(FocusGuard::lastManualFocusChangeTime<time(0)-2))
-	{
-		if(_tabs->count()) {
-			_tabs->currentWidget()->setFocus();
-			((STWindowContainer*)(_tabs->currentWidget()))->setInputFocus();
-		}
-	}
-	return QMainWindow::windowActivationChange(active);
-}
-
 bool STabMainWindow::eventFilter(QObject *obj, QEvent *ev)
 {
 	if(ev->type()==QEvent::KeyPress)
@@ -299,6 +285,21 @@ bool STabMainWindow::eventFilter(QObject *obj, QEvent *ev)
 		_tabs->setCurrentIndex(index);
 		return true;
 	}
+	else if (ev->type()==QEvent::FocusIn)
+	{
+		if((FocusGuard::lastManualFocusChangeTime>time(0)-1)||(_tabs->count()==0))
+			return false;
+		QWidget *w=(QWidget*)obj;
+		while(w!=0)
+		{
+			if(w==_contacts)
+			{
+				_tabs->currentWidget()->setFocus();
+				return true;
+			}
+			w=w->parentWidget();
+		}
+	}
 	return false;
 }
 
@@ -341,8 +342,6 @@ void STabMainWindow::changeEvent(QEvent *ev)
 			QRect normal=normalGeometry();
 			SkypeTab::settings.setValue("window/geometry",QVariant::fromValue(normal));
 		}
-		if(windowState()&Qt::WindowActive)
-			windowActivationChange(true);
 	}
 }
 

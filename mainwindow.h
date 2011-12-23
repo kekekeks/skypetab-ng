@@ -17,7 +17,7 @@ namespace skypetab
 class STabMainWindow : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     explicit STabMainWindow(QWidget *parent = 0);
     ~STabMainWindow();
@@ -31,11 +31,11 @@ protected:
 	virtual void resizeEvent(QResizeEvent *event);
 	bool contactsHidden();
 	virtual void closeEvent(QCloseEvent *);
-	virtual void windowActivationChange(bool active);
 	bool eventFilter(QObject*obj, QEvent*ev);
 	void setVisible(bool visible);
 	void changeEvent(QEvent *);
 private:
+	QWidget*_focusTrap;
 	QTabWidget* _tabs;
 	ContactListContainer* _contacts;
 	QSplitter*_splitter;

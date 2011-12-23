@@ -156,6 +156,7 @@ void STWindowContainer::setInputFocus()
 	}
 	QApplication::setActiveWindow(_embedded);
 	X11::Sync(false);
+	FocusGuard::lastManualFocusChangeTime=time(0);
 }
 
 void STWindowContainer::focusInEvent(QFocusEvent *)
