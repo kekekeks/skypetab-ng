@@ -11,6 +11,7 @@ Version: %{version}
 Buildroot: /tmp/skypetab-ng 
 %if 0%{?suse_version}
 BuildRequires: xorg-x11-libX11-devel
+Source5: skypetab-ng-rpmlintrc
 %define QMAKE qmake
 %else
 Provides: skypetab-ng 
