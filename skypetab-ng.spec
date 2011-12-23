@@ -10,6 +10,8 @@ Source: skypetab-ng.tar.gz
 URL: http://keks-n.net/skypetab
 Version: %{version} 
 Buildroot: /tmp/skypetab-ng 
+BuildRequires: libX11-devel
+BuildRequires: qt-devel
 AutoReq:        no
 BuildArch:      noarch
 %global _binaries_in_noarch_packages_terminate_build 0
