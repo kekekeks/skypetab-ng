@@ -144,13 +144,17 @@ QWidget *STWindowContainer::inputArea()
 	return _inputArea;
 }
 
-void STWindowContainer::focusInEvent(QFocusEvent *)
+void STWindowContainer::setInputFocus()
 {
-
 	if((_embedded==0)||(_destroyed))
 		return;
 	XSetInputFocus(X11::XDisplay, this->winId(), RevertToNone, CurrentTime);
 	XSetInputFocus(X11::XDisplay, _embedded->winId(), RevertToNone, CurrentTime);
+}
+
+void STWindowContainer::focusInEvent(QFocusEvent *)
+{
+	setInputFocus();
 }
 
 void STWindowContainer::dragEnterEvent(QDragEnterEvent *ev)

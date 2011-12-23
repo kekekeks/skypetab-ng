@@ -15,6 +15,7 @@ namespace X11
 	QList<WId> GetChildren(WId window);
 	WId GetInputFocus();
 	void Flush();
+	void Sync(bool discard);
 }
 
 }

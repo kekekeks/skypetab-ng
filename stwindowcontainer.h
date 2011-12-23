@@ -25,6 +25,7 @@ public:
 	QWidget* widget();
 	QWidget* inputArea();
 	time_t _embeddedAt;
+	void setInputFocus();
 	virtual void focusInEvent(QFocusEvent *);
 	virtual void dragEnterEvent(QDragEnterEvent *);
 	virtual void dropEvent(QDropEvent *ev);

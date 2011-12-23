@@ -30,6 +30,11 @@ namespace X11
 	{
 		XFlush(XDisplay);
 	}
+	void Sync(bool discard)
+	{
+		XSync(XDisplay, discard);
+	}
+
 	Window GetInputFocus()
 	{
 		Window w;

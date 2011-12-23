@@ -97,6 +97,15 @@ void SkypeTab::stage2Init()
 	_instance->_stage2Init();
 }
 
+bool SkypeTab::onWindowActivation(QWidget *widget)
+{
+	stage2Init();
+	while(widget->parentWidget())
+		widget=widget->parentWidget();
+	QString cl=QString::fromLocal8Bit(widget->metaObject()->className());
+	return !_instance->mainWindow->activateTab(widget);
+}
+
 
 void SkypeTab::onMenuShow()
 {

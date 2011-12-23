@@ -32,6 +32,7 @@ public:
 	static WId onNewWindow ();
 	static void stage1Init();
 	static void stage2Init();
+	static bool onWindowActivation(QWidget*widget);
 	STabMainWindow* mainWindow;
 	static void onTryShow(QWidget*widget);
 	void raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason reason);

@@ -25,6 +25,7 @@ public:
 	void SetMainWindow(QWidget *tab);
 	QWidget *activeWidget;
 	void toggleContacts();
+	bool activateTab(QWidget *widget);
 protected:
 	void timerEvent(QTimerEvent*);
 	virtual void resizeEvent(QResizeEvent *event);
@@ -40,6 +41,7 @@ private:
 	QSplitter*_splitter;
 	QList<STWatcher*> _watchers;
 	QList<int> getSizes(bool contactsHidden, QSize *newSize=0);
+	int findTab(QWidget*widget);
 
 private slots:
 	void tabChanged (int index);

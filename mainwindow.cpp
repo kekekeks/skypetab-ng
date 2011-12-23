@@ -95,6 +95,28 @@ void STabMainWindow::toggleContacts()
 	_splitter->setSizes(getSizes(!contactsHidden()));
 }
 
+bool STabMainWindow::activateTab(QWidget *widget)
+{
+	int index=findTab(widget);
+	if(index!=-1)
+	{
+		bool manualEvent=true;
+		if(index!=_tabs->currentIndex())
+		{
+			_tabs->setCurrentIndex(index);
+			bool manualEvent=false;
+		}
+		this->show();
+		_tabs->widget(index)->setFocus();
+		((STWindowContainer*)(_tabs->widget(index)))->setInputFocus();
+		X11::Flush();
+		X11::Sync(false);
+		tabChanged(index);
+		return true;
+	}
+	return false;
+}
+
 void STabMainWindow::timerEvent(QTimerEvent *)
 {
 	QIcon wicon=QApplication::windowIcon();
@@ -254,12 +276,7 @@ bool STabMainWindow::eventFilter(QObject *obj, QEvent *ev)
 			QWidget *w=qobject_cast<QWidget*>(obj);
 			while(w->parentWidget()!=0)
 				w=w->parentWidget();
-			for(int c=0; c<_tabs->count(); c++)
-				if(((STWindowContainer*)_tabs->widget(c))->widget()==w)
-				{
-					index=c;
-					break;
-				}
+			index=findTab(w);
 		}
 
 		if(index==-1)
@@ -299,6 +316,8 @@ void STabMainWindow::setVisible(bool visible)
 			}
 			QMainWindow::setVisible(true);
 		}
+		if(isMinimized())
+			setWindowState(windowState()^Qt::WindowMinimized);
 		QApplication::setActiveWindow(this);
 	}
 	else
@@ -360,8 +379,19 @@ QList<int> STabMainWindow::getSizes(bool contactsHidden, QSize*newSize)
 	return rv;
 }
 
-
-
+int STabMainWindow::findTab(QWidget *widget)
+{
+	int index=-1;
+	for(int c=0; c<_tabs->count(); c++)
+	{
+		if(((STWindowContainer*)_tabs->widget(c))->widget()==widget)
+		{
+			index=c;
+			break;
+		}
+	}
+	return index;
+}
 
 
 
@@ -378,7 +408,7 @@ void STabMainWindow::tabChangedAfterShock()
 		STWindowContainer*cont=(STWindowContainer*)_tabs->currentWidget();
 		X11::Flush();
 		QApplication::setActiveWindow(this);
-		cont->setFocus();
+		cont->setInputFocus();
 		X11::Flush();
 	}
 }

@@ -47,9 +47,28 @@ namespace skypetab
 		_signalInterceptors.append(nfo);
 	}
 
-
 }
 using namespace skypetab;
+
+typedef void (QWidget::*activateWindowProto)();
+activateWindowProto realActivateWindow=0;
+
+extern void QWidget::activateWindow()
+{
+	if(realActivateWindow==0)
+	{
+		realActivateWindow=&QWidget::activateWindow;
+		void *ptr;
+		memcpy(&ptr, &realActivateWindow, sizeof(ptr));
+		Dl_info nfo;
+		dladdr(ptr, &nfo);
+		ptr=dlsym(RTLD_NEXT, nfo.dli_sname);
+		memcpy(&realActivateWindow, &ptr, sizeof(ptr));
+	}
+	if(SkypeTab::onWindowActivation(this))
+		(this->*realActivateWindow)();
+
+}
 
 
 typedef bool (*connect_proto) ( const QObject * sender, const char * signal, const QObject * receiver, const char * method, Qt::ConnectionType type);
