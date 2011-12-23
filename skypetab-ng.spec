@@ -5,13 +5,13 @@ Name: skypetab-ng
 License: LGPL
 Prefix: /
 Release: 1 
-Source: skypetab-ng.tar.gz 
+Source0: skypetab-ng.tar.gz 
+Source1: skypetab-ng-rpmlintrc
 URL: http://keks-n.net/skypetab
 Version: %{version} 
 Buildroot: /tmp/skypetab-ng 
 %if 0%{?suse_version}
 BuildRequires: xorg-x11-libX11-devel
-Source5: skypetab-ng-rpmlintrc
 %define QMAKE qmake
 %else
 Provides: skypetab-ng 

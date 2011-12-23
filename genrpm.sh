@@ -8,6 +8,7 @@ cp -R * tmprpm/skypetab-ng-$VERSION
 cd tmprpm
 tar czf skypetab-ng.tar.gz skypetab-ng-$VERSION
 mv skypetab-ng.tar.gz rpmbuild/SOURCES
+cp ../skypetab-ng-rpmlintrc rpmbuild/SOURCES
 cp ../skypetab-ng.spec rpmbuild/SPECS
 echo Building
 rpmbuild -bs ../skypetab-ng.spec --buildroot `pwd`/build/ --define='%_topdir %(echo `pwd`)/rpmbuild'
