@@ -295,7 +295,7 @@ bool STabMainWindow::eventFilter(QObject *obj, QEvent *ev)
 		{
 			if(w==_contacts)
 			{
-				_tabs->currentWidget()->setFocus();
+				QTimer::singleShot(50, this, SLOT(tabChangedAfterShock()));
 				return true;
 			}
 			w=w->parentWidget();
