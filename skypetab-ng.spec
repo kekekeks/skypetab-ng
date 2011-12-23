@@ -4,7 +4,6 @@ Group:  Applications/Internet
 Name: skypetab-ng 
 License: LGPL
 Prefix: /
-Provides: skypetab-ng 
 Release: 1 
 Source: skypetab-ng.tar.gz 
 URL: http://keks-n.net/skypetab
@@ -14,6 +13,7 @@ Buildroot: /tmp/skypetab-ng
 BuildRequires: xorg-x11-libX11-devel
 %define QMAKE qmake
 %else
+Provides: skypetab-ng 
 BuildRequires: libX11-devel
 %define QMAKE /usr/lib/qt4/bin/qmake-qt4
 %endif
