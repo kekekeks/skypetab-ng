@@ -77,11 +77,12 @@ STabMainWindow::~STabMainWindow()
 STWindowContainer* STabMainWindow::AddTab(QWidget* w)
 {
 	STWindowContainer*c=new STWindowContainer();
-	_tabs->addTab(c, w->windowTitle());
+	_tabs->addTab(c, "");
 	_tabs->setCurrentWidget(c);
 
 	c->embedWindow(w);
-
+	_tabs->setTabText(_tabs->count()-1, c->getShortWindowTitle(15));
+	_tabs->setTabIcon(_tabs->count()-1, c->windowIcon());
 	return c;
 }
 
