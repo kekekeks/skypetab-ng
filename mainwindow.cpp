@@ -293,7 +293,9 @@ bool STabMainWindow::eventFilter(QObject *obj, QEvent *ev)
 		QWidget *w=(QWidget*)obj;
 		while(w!=0)
 		{
-			if(w==_contacts)
+			if(0==strcmp(w->metaObject()->className(), STWindowContainer::staticMetaObject.className()))
+				return false;
+			if(w==this)
 			{
 				QTimer::singleShot(50, this, SLOT(tabChangedAfterShock()));
 				return true;
