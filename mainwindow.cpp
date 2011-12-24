@@ -154,6 +154,10 @@ void STabMainWindow::timerEvent(QTimerEvent *)
 		}
 		i++;
 	}
+	bool showCounter= (isHidden()) ||
+			SkypeTab::settings.value("tabCounter/alwaysShow",QVariant::fromValue(false)).toBool();
+	if(!showCounter)
+		activeTabsCount=0;
 	SkypeTab::updateTrayIcon(activeTabsCount);
 
 	if(foundActive)
@@ -217,10 +221,13 @@ bool STabMainWindow::contactsHidden()
 
 void STabMainWindow::closeEvent(QCloseEvent *ev)
 {
-  /*	for(int i=_tabs->count()-1; i>=0; i--)
-	{
-		tabCloseRequested(i);
-	} */
+	if(!SkypeTab::settings.value("tabs/noClose", QVariant::fromValue(false)).toBool())
+  	{
+		for(int i=_tabs->count()-1; i>=0; i--)
+		{
+			tabCloseRequested(i);
+		}
+	}
 	ev->accept();
 }
 

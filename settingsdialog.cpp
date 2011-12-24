@@ -43,6 +43,12 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 			*/
 		}
 	}
+	group=findChild<QWidget*>("miscOptions");
+	layout=new QBoxLayout(QBoxLayout::TopToBottom);
+	group->setLayout(layout);
+	addSettingsCheckbox(layout, "Don't close tabs with the window", "tabs/noClose", false);
+	addSettingsCheckbox(layout, "Always show additional event counter", "tabCounter/alwaysShow", false);
+
 	group=findChild<QWidget*>("startOptions");
 	layout=new QBoxLayout(QBoxLayout::TopToBottom);
 	group->setLayout(layout);

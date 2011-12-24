@@ -56,6 +56,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="miscOptions">
+     <property name="title">
+      <string>Miscellaneous</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
