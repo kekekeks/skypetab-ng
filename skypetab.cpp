@@ -139,21 +139,24 @@ QIcon SkypeTab::GetIcon()
 	QString string = "";
 	if (_activeMsgsCount == 0)
 		return QIcon(newPixmap);
-
-	string = QString::number(_activeMsgsCount);
+	if(_activeMsgsCount<10)
+		string = QString::number(_activeMsgsCount);
+	else
+		string = tr("M");
 	painter.setRenderHints(QPainter::Antialiasing);
 
 	QBrush back(QColor(40, 40, 120, 255));
 	QPen front(QColor(255, 255, 255, 255));
 	painter.setBrush(back);
-	painter.drawEllipse(QPoint(newPixmap.width()-7, newPixmap.height()-7), 7, 7);
+	painter.drawEllipse(QPoint(newPixmap.width()-7, 7), 7, 7);
 
 	painter.setPen(front);
 	QFont font=painter.font();
 
+	font.setBold(true);
 	font.setPointSize(8);
 	painter.setFont(font);
-	painter.drawText(newPixmap.width()-14, newPixmap.height()-14, 14, 14, Qt::AlignHCenter | Qt::AlignVCenter, string);
+	painter.drawText(newPixmap.width()-15, 1, 14, 14, Qt::AlignHCenter | Qt::AlignVCenter, string);
 
 	return QIcon(newPixmap);
 }
