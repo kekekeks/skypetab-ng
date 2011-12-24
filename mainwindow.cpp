@@ -220,7 +220,7 @@ void STabMainWindow::closeEvent(QCloseEvent *ev)
   /*	for(int i=_tabs->count()-1; i>=0; i--)
 	{
 		tabCloseRequested(i);
-                } */
+	} */
 	ev->accept();
 }
 
