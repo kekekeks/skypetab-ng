@@ -157,6 +157,8 @@ QIcon SkypeTab::GetIcon()
 
 void SkypeTab::updateTrayIcon(int count)
 {
+	if(_activeMsgsCount==count)
+		return;
 	_activeMsgsCount = count;
 	if (_trayPixmap==0)
 		return;
