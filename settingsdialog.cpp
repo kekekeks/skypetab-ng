@@ -102,7 +102,7 @@ void SettingsDialog::execIt()
 		QFile::remove(autostartPath);
 	}
 
-	QMessageBox msgbox("SkypeTab", "Changes will take effect after the next start of Skype™",
+	QMessageBox msgbox("SkypeTab", "Some changes will take effect after the next start of Skype™",
 					   QMessageBox::Information,0,0,0);
 	msgbox.exec();
 }
