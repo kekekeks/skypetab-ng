@@ -144,6 +144,9 @@ QIcon SkypeTab::onSetIcon(const QIcon& icon, QSystemTrayIcon* tray)
 void SkypeTab::updateTrayIcon(int count) {
 	_activeMsgsCount = count;
 
+	if (_trayPixmap==0)
+		return;
+
 	QIcon new_icon = onSetIcon(QIcon(*_trayPixmap), 0);
 
 	if (_trayIcon != 0) {
