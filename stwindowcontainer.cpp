@@ -149,13 +149,12 @@ void STWindowContainer::setInputFocus()
 	if((_embedded==0)||(_destroyed))
 		return;
 	XSetInputFocus(X11::XDisplay, this->winId(), RevertToNone, CurrentTime);
-	if (_inputArea) {
-		XSetInputFocus(X11::XDisplay, _inputArea->winId(), RevertToParent, CurrentTime);
-	} else {
-		XSetInputFocus(X11::XDisplay, _embedded->winId(), RevertToParent, CurrentTime);
-	}
+	XSetInputFocus(X11::XDisplay, _embedded->winId(), RevertToParent, CurrentTime);
+
 	QApplication::setActiveWindow(_embedded);
 	X11::Sync(false);
+	if (_inputArea)
+		_inputArea->setFocus();
 	FocusGuard::lastManualFocusChangeTime=time(0);
 }
 
