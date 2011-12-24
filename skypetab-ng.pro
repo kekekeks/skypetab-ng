@@ -6,7 +6,7 @@
 
 TARGET = skypetab-ng
 TEMPLATE = lib
-VERSION = 0.4.8
+VERSION = 0.4.9
 
 DEFINES += SKYPETABNG_LIBRARY
 QMAKE_CXXFLAGS += -std=c++0x

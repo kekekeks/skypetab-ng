@@ -1,3 +1,11 @@
+skypetab-ng (0.4.9-1) oneiric; urgency=low
+
+  * Fixed some focus issues
+  * Added "don't close tabs with the window" option
+  * Added additional event counter to Skype's icon
+
+ -- Nikita Tsukanov <keks9n@gmail.com>  Sat, 24 Dec 2011 16:55:57 +0400
+
 skypetab-ng (0.4.8-1) oneiric; urgency=low
 
   * Now it remembers it's last window position
