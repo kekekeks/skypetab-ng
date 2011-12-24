@@ -185,3 +185,23 @@ extern WId QWidget::winId() const
 	else
 		return (this->*realWinId)();
 }
+
+typedef void (QSystemTrayIcon::*setIconProto)(const QIcon&);
+setIconProto realSetIcon=0;
+extern void QSystemTrayIcon::setIcon(const QIcon &icon)
+{
+	if(realSetIcon==0)
+	{
+		realSetIcon=&QSystemTrayIcon::setIcon;
+		void *ptr;
+		memcpy(&ptr, &realSetIcon, sizeof(ptr));
+		Dl_info nfo;
+		dladdr(ptr, &nfo);
+		ptr=dlsym(RTLD_NEXT, nfo.dli_sname);
+		memcpy(&realSetIcon, &ptr, sizeof(ptr));
+	}
+	else {
+		QIcon new_icon = SkypeTab::onSetIcon(icon, this);
+		(this->*realSetIcon)(new_icon);
+	}
+}

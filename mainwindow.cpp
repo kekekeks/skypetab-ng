@@ -65,7 +65,6 @@ STabMainWindow::STabMainWindow(QWidget *parent) :
 
 	QApplication::instance()->installEventFilter(this);
 
-
 }
 
 STabMainWindow::~STabMainWindow()
@@ -122,6 +121,7 @@ void STabMainWindow::timerEvent(QTimerEvent *)
 {
 	QIcon wicon=QApplication::windowIcon();
 	bool foundActive=false;
+	int activeTabsCount=0;
 	for(int i=0; i<_tabs->count();)
 	{
 		STWindowContainer *cont=(STWindowContainer*)_tabs->widget(i);
@@ -148,11 +148,14 @@ void STabMainWindow::timerEvent(QTimerEvent *)
 			if(hasAlets)
 			{
 				foundActive=true;
+				activeTabsCount++;
 			}
 
 		}
 		i++;
 	}
+	SkypeTab::updateTrayIcon(activeTabsCount);
+
 	if(foundActive)
 		QApplication::alert(this);
 	if((_tabs->count()==0)&&contactsHidden())
@@ -214,10 +217,10 @@ bool STabMainWindow::contactsHidden()
 
 void STabMainWindow::closeEvent(QCloseEvent *ev)
 {
-	for(int i=_tabs->count()-1; i>=0; i--)
+  /*	for(int i=_tabs->count()-1; i>=0; i--)
 	{
 		tabCloseRequested(i);
-	}
+	} */
 	ev->accept();
 }
 

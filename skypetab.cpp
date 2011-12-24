@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QTimer>
 #include <QApplication>
 #include <QMouseEvent>
+#include <QPainter>
 #include "focusguard.h"
 #include "mainwindow.h"
 #include "qintercept.h"
@@ -114,6 +115,47 @@ bool SkypeTab::onWindowActivation(QWidget *widget)
 }
 
 
+QIcon SkypeTab::onSetIcon(const QIcon& icon, QSystemTrayIcon* tray)
+{
+	QSize iconsize = icon.actualSize(QSize(99,99));
+	if (_trayPixmap == 0)
+		_trayPixmap = new QPixmap(iconsize);
+
+	if (_trayIcon == 0 && tray != 0)
+		_trayIcon = tray;
+
+	if (tray != 0 && !_manualTrayUpdate)
+		// only real skype set background pixmap
+		*_trayPixmap = icon.pixmap(iconsize);
+
+	QPixmap newPixmap = *_trayPixmap;
+	QPainter painter(&newPixmap);
+
+	QString string = "";
+	if (_activeMsgsCount > 0)
+		string = QString::number(_activeMsgsCount);
+
+	painter.drawText(0, 0, iconsize.width(), iconsize.height(), Qt::AlignRight | Qt::AlignTop, string);
+
+	_manualTrayUpdate = false;
+	return QIcon(newPixmap);
+}
+
+void SkypeTab::updateTrayIcon(int count) {
+	_activeMsgsCount = count;
+
+	if (_trayPixmap==0)
+		return;
+
+	QIcon new_icon = onSetIcon(QIcon(*_trayPixmap), 0);
+
+	if (_trayIcon != 0) {
+		_manualTrayUpdate = true;
+		_trayIcon->setIcon(new_icon);
+	}
+}
+
+
 void SkypeTab::onMenuShow()
 {
 	if(_trayMenu==0)
@@ -136,9 +178,11 @@ void SkypeTab::onTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
 	else
 	{
 		raiseTrayMenuActivated(reason);
-		if(_trayIcon==0)
+		if(_trayMenu==0)
 		{
-			_trayIcon=qobject_cast<QSystemTrayIcon*>(sender());
+			if (_trayIcon==0)
+				_trayIcon=qobject_cast<QSystemTrayIcon*>(sender());
+
 			_trayMenu=_trayIcon->contextMenu();
 			connect(_trayMenu, SIGNAL(aboutToShow()),this, SLOT(onMenuShow()));
 			onMenuShow();
@@ -150,6 +194,10 @@ void SkypeTab::onTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
 
 SkypeTab* SkypeTab::_instance=0;
 QWidget*SkypeTab::_mainSkypeWindow=0;
+QPixmap*SkypeTab::_trayPixmap=0;
+QSystemTrayIcon*SkypeTab::_trayIcon=0;
+int SkypeTab::_activeMsgsCount=0;
+bool SkypeTab::_manualTrayUpdate=false;
 QSettings SkypeTab::settings("kekekeks","skypetab-ng");
 bool* SkypeTab::enabledTabClassesList=0;
 

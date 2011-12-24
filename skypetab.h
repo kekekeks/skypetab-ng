@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QMenu>
 #include <QSystemTrayIcon>
+#include <QIcon>
 #include "mainwindow.h"
 #include <queue>
 #include "aboutdialog.h"
@@ -13,7 +14,7 @@ namespace skypetab
 class SkypeTab : public QObject
 {
     Q_OBJECT
-	QSystemTrayIcon*_trayIcon;
+	static QSystemTrayIcon*_trayIcon;
 	QMenu*_trayMenu;
 	void onTrayIcon();
 	QList<QWidget*> _pendingWindows;
@@ -22,7 +23,9 @@ class SkypeTab : public QObject
 	QMenu*_myMenu;
 	static bool *enabledTabClassesList;
 	static void loadEnabledTabClassesList();
-
+	static QPixmap* _trayPixmap;
+	static int _activeMsgsCount;
+	static bool _manualTrayUpdate;
 
 	void _stage2Init();
 public:
@@ -33,9 +36,11 @@ public:
 	static void stage1Init();
 	static void stage2Init();
 	static bool onWindowActivation(QWidget*widget);
+	static QIcon onSetIcon(const QIcon&, QSystemTrayIcon*);
 	STabMainWindow* mainWindow;
 	static void onTryShow(QWidget*widget);
 	void raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason reason);
+	static void updateTrayIcon(int);
 	static QSettings settings;
 
 	static const char*tabClassesList[][2];
