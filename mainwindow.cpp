@@ -65,7 +65,6 @@ STabMainWindow::STabMainWindow(QWidget *parent) :
 
 	QApplication::instance()->installEventFilter(this);
 
-
 }
 
 STabMainWindow::~STabMainWindow()
@@ -79,6 +78,8 @@ STWindowContainer* STabMainWindow::AddTab(QWidget* w)
 	STWindowContainer*c=new STWindowContainer();
 	_tabs->addTab(c, "");
 	_tabs->setCurrentWidget(c);
+
+	SkypeTab::updateTrayIcon(_tabs->count());
 
 	c->embedWindow(w);
 	_tabs->setTabText(_tabs->count()-1, c->getShortWindowTitle(15));
