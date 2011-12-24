@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtGui/QSystemTrayIcon>
 #include <QList>
 #include "skypetab.h"
+#include "qintercept.h"
 #include <dlfcn.h>
 
 namespace skypetab
@@ -186,7 +187,6 @@ extern WId QWidget::winId() const
 		return (this->*realWinId)();
 }
 
-typedef void (QSystemTrayIcon::*setIconProto)(const QIcon&);
 setIconProto realSetIcon=0;
 extern void QSystemTrayIcon::setIcon(const QIcon &icon)
 {
@@ -200,8 +200,7 @@ extern void QSystemTrayIcon::setIcon(const QIcon &icon)
 		ptr=dlsym(RTLD_NEXT, nfo.dli_sname);
 		memcpy(&realSetIcon, &ptr, sizeof(ptr));
 	}
-	else {
-		QIcon new_icon = SkypeTab::onSetIcon(icon, this);
-		(this->*realSetIcon)(new_icon);
-	}
+	QIcon new_icon = SkypeTab::onSetIcon(icon, this);
+	(this->*realSetIcon)(new_icon);
+
 }

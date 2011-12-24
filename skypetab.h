@@ -37,6 +37,7 @@ public:
 	static void stage2Init();
 	static bool onWindowActivation(QWidget*widget);
 	static QIcon onSetIcon(const QIcon&, QSystemTrayIcon*);
+	static QIcon GetIcon();
 	STabMainWindow* mainWindow;
 	static void onTryShow(QWidget*widget);
 	void raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason reason);

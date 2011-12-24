@@ -24,6 +24,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QApplication>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QBrush>
+#include <QPen>
+#include <QColor>
 #include "focusguard.h"
 #include "mainwindow.h"
 #include "qintercept.h"
@@ -123,35 +126,42 @@ QIcon SkypeTab::onSetIcon(const QIcon& icon, QSystemTrayIcon* tray)
 
 	if (_trayIcon == 0 && tray != 0)
 		_trayIcon = tray;
+	*_trayPixmap = icon.pixmap(iconsize);
+	return GetIcon();
 
-	if (tray != 0 && !_manualTrayUpdate)
-		// only real skype set background pixmap
-		*_trayPixmap = icon.pixmap(iconsize);
+}
 
+QIcon SkypeTab::GetIcon()
+{
 	QPixmap newPixmap = *_trayPixmap;
 	QPainter painter(&newPixmap);
 
 	QString string = "";
-	if (_activeMsgsCount > 0)
-		string = QString::number(_activeMsgsCount);
+	if (_activeMsgsCount == 0)
+		return QIcon(newPixmap);
 
-	painter.drawText(0, 0, iconsize.width(), iconsize.height(), Qt::AlignRight | Qt::AlignTop, string);
+	string = QString::number(_activeMsgsCount);
+	painter.setBackgroundMode(Qt::OpaqueMode);
 
-	_manualTrayUpdate = false;
+	QBrush back(QColor(40, 40, 120, 255));
+	QPen front(QColor(255, 255, 255, 255));
+	painter.setBackground(back);
+	painter.setPen(front);
+	QFont font=painter.font();
+	font.setBold(true);
+	painter.setFont(font);
+	painter.drawText(0, 0, newPixmap.width(), newPixmap.height(), Qt::AlignLeft | Qt::AlignTop, string);
+
 	return QIcon(newPixmap);
 }
 
-void SkypeTab::updateTrayIcon(int count) {
+void SkypeTab::updateTrayIcon(int count)
+{
 	_activeMsgsCount = count;
-
 	if (_trayPixmap==0)
 		return;
-
-	QIcon new_icon = onSetIcon(QIcon(*_trayPixmap), 0);
-
 	if (_trayIcon != 0) {
-		_manualTrayUpdate = true;
-		_trayIcon->setIcon(new_icon);
+		(_trayIcon->*realSetIcon)(GetIcon());
 	}
 }
 
