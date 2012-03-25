@@ -186,6 +186,16 @@ void SkypeTab::onMenuShow()
 
 }
 
+void skypetab::SkypeTab::onSetContextMenu(QMenu *menu)
+{
+	stage2Init();
+	if(_instance->_trayMenu!=0)
+		return;
+	_instance->_trayMenu=menu;
+	connect(menu, SIGNAL(aboutToShow()),_instance, SLOT(onMenuShow()));
+	_instance->onMenuShow();
+}
+
 void SkypeTab::onTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
 {
 	stage2Init();
@@ -194,18 +204,8 @@ void SkypeTab::onTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
 		onTrayIcon();
 	}
 	else
-	{
 		raiseTrayMenuActivated(reason);
-		if(_trayMenu==0)
-		{
-			if (_trayIcon==0)
-				_trayIcon=qobject_cast<QSystemTrayIcon*>(sender());
 
-			_trayMenu=_trayIcon->contextMenu();
-			connect(_trayMenu, SIGNAL(aboutToShow()),this, SLOT(onMenuShow()));
-			onMenuShow();
-		}
-	}
 }
 
 
@@ -340,3 +340,4 @@ void SkypeTab::loadEnabledTabClassesList()
 	}
 }
 }
+

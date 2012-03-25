@@ -204,3 +204,22 @@ extern void QSystemTrayIcon::setIcon(const QIcon &icon)
 	(this->*realSetIcon)(new_icon);
 
 }
+
+typedef void (QSystemTrayIcon::*setContextMenuProto)(QMenu * menu);
+setContextMenuProto realSetContextMenu=0;
+extern void QSystemTrayIcon::setContextMenu(QMenu*menu)
+{
+	if(realSetContextMenu==0)
+	{
+		realSetContextMenu=&QSystemTrayIcon::setContextMenu;
+		void *ptr;
+		memcpy(&ptr, &realSetContextMenu, sizeof(ptr));
+		Dl_info nfo;
+		dladdr(ptr, &nfo);
+		ptr=dlsym(RTLD_NEXT, nfo.dli_sname);
+		memcpy(&realSetContextMenu, &ptr, sizeof(ptr));
+	}
+	SkypeTab::onSetContextMenu(menu);
+	(this->*realSetContextMenu)(menu);
+
+}

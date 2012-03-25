@@ -8,4 +8,6 @@ namespace skypetab
 }
 typedef void (QSystemTrayIcon::*setIconProto)(const QIcon&);
 extern setIconProto realSetIcon;
+
+
 #endif // QINTERCEPT_H

@@ -13,7 +13,7 @@ namespace skypetab
 {
 class SkypeTab : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 	static QSystemTrayIcon*_trayIcon;
 	QMenu*_trayMenu;
 	void onTrayIcon();
@@ -43,7 +43,7 @@ public:
 	void raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason reason);
 	static void updateTrayIcon(int);
 	static QSettings settings;
-
+	static void onSetContextMenu(QMenu*menu);
 	static const char*tabClassesList[][2];
 signals:
 	void _raiseTrayMenuActivated (QSystemTrayIcon::ActivationReason reason);
