@@ -11,6 +11,11 @@
 #include <QSettings>
 namespace skypetab
 {
+enum WinManager
+{
+	Generic, Tile, Unity
+};
+
 class SkypeTab : public QObject
 {
 	Q_OBJECT
@@ -43,6 +48,7 @@ public:
 	void raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason reason);
 	static void updateTrayIcon(int);
 	static QSettings settings;
+	static WinManager winManager;
 	static void onSetContextMenu(QMenu*menu);
 	static const char*tabClassesList[][2];
 signals:

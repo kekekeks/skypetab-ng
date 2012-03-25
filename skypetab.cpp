@@ -83,6 +83,15 @@ void SkypeTab::stage1Init()
 	if(done)
 		return;
 	done=true;
+
+	const char*curDesktop= getenv("XDG_CURRENT_DESKTOP");
+	if(curDesktop!=0)
+	{
+		if(0==strcmp("Unity", curDesktop))
+			winManager=Unity;
+	}
+
+
 	_instance=new SkypeTab();
 	if((settings.value("startup/activate", QVariant::fromValue(false)).toBool()) &&
 				SingleInstance::activatePreviousInstance())
@@ -217,6 +226,7 @@ QSystemTrayIcon*SkypeTab::_trayIcon=0;
 int SkypeTab::_activeMsgsCount=0;
 bool SkypeTab::_manualTrayUpdate=false;
 QSettings SkypeTab::settings("kekekeks","skypetab-ng");
+WinManager SkypeTab::winManager=Generic;
 bool* SkypeTab::enabledTabClassesList=0;
 
 const char* SkypeTab::tabClassesList[][2]={

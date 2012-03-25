@@ -161,7 +161,7 @@ void STabMainWindow::timerEvent(QTimerEvent *)
 	SkypeTab::updateTrayIcon(activeTabsCount);
 
 	if(foundActive)
-		QApplication::alert(this);
+		QApplication::alert(this, (SkypeTab::winManager==Unity)?250:0);
 	if((_tabs->count()==0)&&contactsHidden())
 	{
 		_splitter->setSizes(getSizes(false));
