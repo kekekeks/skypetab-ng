@@ -48,6 +48,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	group->setLayout(layout);
 	addSettingsCheckbox(layout, "Don't close tabs with the window", "tabs/noClose", false);
 	addSettingsCheckbox(layout, "Always show additional event counter", "tabCounter/alwaysShow", false);
+	if(SkypeTab::winManager==Unity)
+		addSettingsCheckbox(layout, "Do not wiggle constantly in Unity launcher", "unity/noConstantUrgency", false);
 
 	group=findChild<QWidget*>("startOptions");
 	layout=new QBoxLayout(QBoxLayout::TopToBottom);
