@@ -55,7 +55,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	layout=new QBoxLayout(QBoxLayout::TopToBottom);
 	group->setLayout(layout);
 	addSettingsCheckbox(layout, "Don't show window at start", "startup/hidden", false);
-	addSettingsCheckbox(layout, "Activate previous instance", "startup/activate", false);
+	addSettingsCheckbox(layout, "Activate previous instance", "startup/activate", true);
 
 	autostartPath=QString(getenv("HOME"));
 	autostartPath=autostartPath.append("/.config/autostart/skypetab.desktop");
