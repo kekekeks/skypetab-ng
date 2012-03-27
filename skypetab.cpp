@@ -305,7 +305,7 @@ void SkypeTab::raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
 void SkypeTab::onTrayIcon()
 {
 	stage2Init();
-	if((SkypeTab::winManager==Generic) && mainWindow->isActiveWindow())
+	if((SkypeTab::winManager==Generic) && (mainWindow->isActiveWindow()||mainWindow->hasActiveTab()))
 	{
 
 		mainWindow->setWindowState(mainWindow->windowState() & ~Qt::WindowActive | Qt::WindowMinimized);

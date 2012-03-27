@@ -23,7 +23,7 @@ public:
     ~STabMainWindow();
 	STWindowContainer *AddTab(QWidget *tab);
 	void SetMainWindow(QWidget *tab);
-	QWidget *activeWidget;
+	bool hasActiveTab();
 	void toggleContacts();
 	bool activateTab(QWidget *widget);
 protected:

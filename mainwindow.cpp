@@ -52,7 +52,6 @@ STabMainWindow::STabMainWindow(QWidget *parent) :
 	FocusGuard::addGuardedWidget(this);
 
 	startTimer(300);
-	activeWidget=0;
 	_tabs->setFocusPolicy(Qt::NoFocus);
 
 	connect(_tabs, SIGNAL(currentChanged(int)),  this, SLOT(tabChanged(int)));
@@ -443,4 +442,15 @@ void STabMainWindow::tabCloseRequested(int index)
 	STWindowContainer* cont=qobject_cast<STWindowContainer*>(_tabs->widget(index));
 	cont->widget()->close();
 }
+}
+
+bool skypetab::STabMainWindow::hasActiveTab()
+{
+	for(int i=0; i<_tabs->count();i++)
+	{
+		STWindowContainer*cont=((STWindowContainer*)(_tabs->widget(i)));
+		if(cont->widget()->isActiveWindow())
+			return true;
+	}
+	return false;
 }
