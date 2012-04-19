@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "x11.h"
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
 namespace skypetab
 {
 namespace X11
@@ -41,6 +42,14 @@ namespace X11
 		int i;
 		XGetInputFocus(XDisplay, &w, &i);
 		return w;
+	}
+	void SetClassName(WId window, QString className)
+	{
+		XClassHint classHint;
+		QByteArray name= className.toLocal8Bit();
+		classHint.res_name = name.data();
+		classHint.res_class = name.data();
+		XSetClassHint(XDisplay, window, &classHint);
 	}
 
 }

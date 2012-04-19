@@ -16,6 +16,7 @@ namespace X11
 	WId GetInputFocus();
 	void Flush();
 	void Sync(bool discard);
+	void SetClassName(WId window, QString className);
 }
 
 }

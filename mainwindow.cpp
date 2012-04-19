@@ -38,6 +38,7 @@ namespace skypetab
 STabMainWindow::STabMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+	X11::SetClassName(winId(), "SkypeTab");
 	setFocusPolicy(Qt::StrongFocus);
 	_contacts=new ContactListContainer();
 	setMinimumSize(640,400);
