@@ -84,7 +84,6 @@ bool QObject::connect ( const QObject * sender, const char * signal, const QObje
 		Dl_info nfo;
 		dladdr((void*)real_connect, &nfo);
 		real_connect=(connect_proto)dlsym(RTLD_NEXT, nfo.dli_sname);
-		SkypeTab::stage1Init();
 	}
 
 	if(sender!=0)
