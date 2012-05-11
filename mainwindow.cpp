@@ -117,6 +117,16 @@ bool STabMainWindow::activateTab(QWidget *widget)
 	return false;
 }
 
+bool STabMainWindow::tryActivatePreviousInstance()
+{
+	QString cl="SkypeTab";
+	WId instance = X11::FindWindowByClass (cl);
+	if(instance==0)
+		return false;
+	X11::SendXMessage(instance, "ACT");
+	return true;
+}
+
 void STabMainWindow::timerEvent(QTimerEvent *)
 {
 	QIcon wicon=QApplication::windowIcon();
@@ -454,4 +464,21 @@ bool skypetab::STabMainWindow::hasActiveTab()
 			return true;
 	}
 	return false;
+}
+
+//X11 stuff
+#include <X11/Xlib.h>
+
+bool skypetab::STabMainWindow::x11Event(XEvent *ev)
+{
+	if(ev->type==ClientMessage)
+	{
+		if(0==memcmp(ev->xclient.data.b, "ACT", 3))
+		{
+			show();
+			raise();
+
+		}
+	}
+	return QMainWindow::x11Event(ev);
 }

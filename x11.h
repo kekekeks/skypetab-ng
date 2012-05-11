@@ -17,6 +17,8 @@ namespace X11
 	void Flush();
 	void Sync(bool discard);
 	void SetClassName(WId window, QString className);
+	WId FindWindowByClass(QString className);
+	void SendXMessage(WId win, QString message);
 }
 
 }

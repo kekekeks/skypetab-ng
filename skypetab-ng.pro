@@ -21,8 +21,7 @@ SOURCES += \
     focusguard.cpp \
     aboutdialog.cpp \
     qtintercept.cpp \
-    settingsdialog.cpp \
-    singleinstance.cpp
+    settingsdialog.cpp
 
 HEADERS +=\
     mainwindow.h \
@@ -34,8 +33,7 @@ HEADERS +=\
     focusguard.h \
     aboutdialog.h \
     qintercept.h \
-    settingsdialog.h \
-    singleinstance.h
+    settingsdialog.h
 
 system("chmod +x skypetab-ng")
 

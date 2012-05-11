@@ -1,7 +1,7 @@
 /*
 x11.cpp
 Author:
-     Nikita Tsukanov <keks9n@gmail.com>
+	 Nikita Tsukanov <keks9n@gmail.com>
 
 Copyright (c) 2011 Nikita Tsukanov
 
@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "x11.h"
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <X11/Xatom.h>
 namespace skypetab
 {
 namespace X11
@@ -51,6 +52,69 @@ namespace X11
 		classHint.res_class = name.data();
 		XSetClassHint(XDisplay, window, &classHint);
 	}
+
+	WId FindWindowByClass(WId parent, QString& className)
+	{
+		WId root, *children;
+		unsigned int nchildren;
+		Atom WM_CLASS = XInternAtom(X11::XDisplay, "WM_CLASS",0);
+		XQueryTree(X11::XDisplay, parent, &root, &parent,&children, &nchildren);
+		WId ret=0;
+		for(unsigned int c=0; c<nchildren; c++)
+		{
+			WId win=children[c];
+
+			unsigned long bytes_after, len;
+			unsigned char *value;
+			int format;
+			Atom actual_type;
+			if(XGetWindowProperty(X11::XDisplay,win,WM_CLASS,0,1024,False,XA_STRING, &actual_type, &format,
+							   &len,&bytes_after,&value)==Success)
+			{
+				if(value!=0)
+				{
+					value[len-1]=0;
+					QString wclass = QString::fromLatin1((char*)value);
+					XFree(value);
+					if(wclass==className)
+					{
+						ret=win;
+						break;
+					}
+				}
+				ret=FindWindowByClass(win, className);
+				if(ret!=0)
+					break;
+			}
+		}
+		XFree(children);
+		return ret;
+	}
+	WId FindWindowByClass(QString className)
+	{
+		return FindWindowByClass(XRootWindow(XDisplay, 0), className);
+	}
+
+	void SendXMessage(WId win, QString message)
+	{
+		XEvent ev;
+		memset(&ev, 0, sizeof(ev));
+		ev.xclient.type = ClientMessage;
+		ev.xclient.window = win;
+		ev.xclient.message_type = XA_STRING;
+		ev.xclient.format = 8;
+
+		//FIXME: possible buffer overflow
+		strcpy(ev.xclient.data.b, message.toLatin1().data());
+		int ret=XSendEvent(X11::XDisplay, win, 0, NoEventMask, &ev);
+		printf("XSendEvent: %i", ret);
+		XSync(X11::XDisplay, False);
+	}
+
+
+
+
+
 
 }
 }

@@ -26,6 +26,7 @@ public:
 	bool hasActiveTab();
 	void toggleContacts();
 	bool activateTab(QWidget *widget);
+	static bool tryActivatePreviousInstance ();
 protected:
 	void timerEvent(QTimerEvent*);
 	virtual void resizeEvent(QResizeEvent *event);
@@ -34,6 +35,7 @@ protected:
 	bool eventFilter(QObject*obj, QEvent*ev);
 	void setVisible(bool visible);
 	void changeEvent(QEvent *);
+	bool x11Event(XEvent *ev);
 private:
 	QWidget*_focusTrap;
 	QTabWidget* _tabs;

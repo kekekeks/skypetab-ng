@@ -31,12 +31,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "mainwindow.h"
 #include "qintercept.h"
 #include <QtDebug>
+#include <QX11Info>
 #include "x11.h"
 #include <X11/Xlib.h>
 #include <stdio.h>
 #include <dlfcn.h>
 #include <queue>
-#include "singleinstance.h"
+
 namespace skypetab
 {
 
@@ -83,7 +84,7 @@ void SkypeTab::stage1Init()
 	if(done)
 		return;
 	done=true;
-
+	X11::XDisplay=QX11Info::display();
 	const char*curDesktop= getenv("XDG_CURRENT_DESKTOP");
 	if(curDesktop!=0)
 	{
@@ -94,10 +95,9 @@ void SkypeTab::stage1Init()
 
 	_instance=new SkypeTab();
 	if((settings.value("startup/activate", QVariant::fromValue(true)).toBool()) &&
-				SingleInstance::activatePreviousInstance())
+				STabMainWindow::tryActivatePreviousInstance())
 		exit(0);
-	else
-		SingleInstance::createWatcher();
+
 }
 
 void SkypeTab::stage2Init()
