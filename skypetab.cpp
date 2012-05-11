@@ -313,6 +313,7 @@ void SkypeTab::onTrayIcon()
 	else
 	{
 		mainWindow->show();
+		mainWindow->raise();
 		mainWindow->activateWindow();
 	}
 }

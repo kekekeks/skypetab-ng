@@ -107,6 +107,7 @@ bool STabMainWindow::activateTab(QWidget *widget)
 			_tabs->setCurrentIndex(index);
 		}
 		this->show();
+		this->raise();
 		_tabs->widget(index)->setFocus();
 		((STWindowContainer*)(_tabs->widget(index)))->setInputFocus();
 		X11::Flush();
