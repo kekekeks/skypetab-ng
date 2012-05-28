@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QBoxLayout>
+#include <QCheckBox>
 namespace Ui {
 class SettingsDialog;
 }
@@ -18,6 +19,8 @@ public:
 	
 private:
 	Ui::SettingsDialog *ui;
+	void addSettingsCheckbox(QBoxLayout*layout, QString title, QString setting, bool defValue, QList<QString> &disables);
+	void addSettingsCheckbox(QBoxLayout*layout, QString title, QString setting, bool defValue, QString disables);
 	void addSettingsCheckbox(QBoxLayout*layout, QString title, QString setting, bool defValue);
 	QString autostartPath;
 protected:
@@ -26,6 +29,7 @@ public slots:
 	virtual void execIt();
 private slots:
 	void namedCheckboxChanged(int value);
+	void checkBoxChanged (QCheckBox* cb, int value);
 
 };
 }

@@ -165,8 +165,9 @@ void STabMainWindow::timerEvent(QTimerEvent *)
 		}
 		i++;
 	}
-	bool showCounter= (isHidden()) ||
-			SkypeTab::settings.value("tabCounter/alwaysShow",QVariant::fromValue(false)).toBool();
+	bool showCounter= (isHidden() ||
+			SkypeTab::settings.value("tabCounter/alwaysShow",QVariant::fromValue(false)).toBool() ||
+			((SkypeTab::winManager==Unity) && SkypeTab::settings.value("unity/noClose", QVariant::fromValue(true)).toBool()));
 	if(!showCounter)
 		activeTabsCount=0;
 	SkypeTab::updateTrayIcon(activeTabsCount);

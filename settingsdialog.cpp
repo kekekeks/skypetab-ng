@@ -51,7 +51,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	if(SkypeTab::winManager==Unity)
 	{
 		addSettingsCheckbox(layout, "Do not wiggle constantly in Unity launcher", "unity/noConstantUrgency", false);
-		addSettingsCheckbox(layout, "Minimize on close", "unity/noClose", true);
+		addSettingsCheckbox(layout, "Minimize on close", "unity/noClose", true, "tabCounter/alwaysShow");
 	}
 	group=findChild<QWidget*>("startOptions");
 	layout=new QBoxLayout(QBoxLayout::TopToBottom);
@@ -67,6 +67,11 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	layout->addWidget(cb);
 
 	this->resize(width(), minimumHeight());
+	foreach(cb, this->findChildren<QCheckBox*>())
+	{
+		checkBoxChanged(cb, cb->isChecked()?1:0);
+	}
+
 }
 
 SettingsDialog::~SettingsDialog()
@@ -74,7 +79,7 @@ SettingsDialog::~SettingsDialog()
 	delete ui;
 }
 
-void SettingsDialog::addSettingsCheckbox(QBoxLayout *layout, QString title, QString keyName, bool isDefault)
+void SettingsDialog::addSettingsCheckbox(QBoxLayout *layout, QString title, QString keyName, bool isDefault, QList<QString> &disables)
 {
 	bool isChecked=(
 			((!SkypeTab::settings.contains(keyName))&&isDefault) //If no setting for this entry, use default flag
@@ -84,9 +89,30 @@ void SettingsDialog::addSettingsCheckbox(QBoxLayout *layout, QString title, QStr
 	QCheckBox* cb=new QCheckBox(title);
 	cb->setChecked(isChecked);
 	cb->setObjectName(keyName);
+	QList<QVariant> vlist;
+	QString dstr;
+	foreach (dstr, disables)
+	{
+		vlist.append(QVariant::fromValue(dstr));
+	}
+
+	cb->setProperty("disables", QVariant::fromValue(vlist));
 	layout->addWidget(cb);
 	connect(cb, SIGNAL(stateChanged(int)), this, SLOT(namedCheckboxChanged(int)));
 	cb->show();
+}
+
+void SettingsDialog::addSettingsCheckbox(QBoxLayout *layout, QString title, QString keyName, bool isDefault)
+{
+	QList<QString> list;
+	addSettingsCheckbox(layout, title, keyName, isDefault, list);
+}
+
+void SettingsDialog::addSettingsCheckbox(QBoxLayout *layout, QString title, QString keyName, bool isDefault, QString disables)
+{
+	QList<QString> list;
+	list.append(disables);
+	addSettingsCheckbox(layout, title, keyName, isDefault, list);
 }
 
 
@@ -113,8 +139,21 @@ void SettingsDialog::execIt()
 
 void SettingsDialog::namedCheckboxChanged(int value)
 {
+	checkBoxChanged((QCheckBox*)sender(), value);
+}
+
+void SettingsDialog::checkBoxChanged(QCheckBox *ccb, int value)
+{
 	if(value>=1)
 		value=1;
-	SkypeTab::settings.setValue(sender()->objectName(), QVariant::fromValue(value));
+	QList<QVariant> vdisables=ccb->property ("disables").value<QList<QVariant>>();
+	QVariant vdis;
+	foreach(vdis, vdisables)
+	{
+		QCheckBox* cb=findChild<QCheckBox*>(vdis.toString());
+		cb->setEnabled(value==0);
+	}
+
+	SkypeTab::settings.setValue(ccb->objectName(), QVariant::fromValue(value));
 }
 }
