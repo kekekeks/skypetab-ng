@@ -240,6 +240,12 @@ bool STabMainWindow::contactsHidden()
 
 void STabMainWindow::closeEvent(QCloseEvent *ev)
 {
+	if((SkypeTab::winManager==Unity)&&(SkypeTab::settings.value("unity/noClose", QVariant::fromValue(true)).toBool()))
+	{
+		ev->ignore();
+		setWindowState(windowState()|Qt::WindowMinimized);
+		return;
+	}
 	if(!SkypeTab::settings.value("tabs/noClose", QVariant::fromValue(false)).toBool())
   	{
 		for(int i=_tabs->count()-1; i>=0; i--)
