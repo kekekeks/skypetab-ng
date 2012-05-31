@@ -1,3 +1,9 @@
+skypetab-ng (0.4.11-1) precise; urgency=low
+
+  * Added minimize-on-close behaviour for Unity
+
+ -- Nikita Tsukanov <keks9n@gmail.com>  Thu, 31 May 2012 22:24:54 +0400
+
 skypetab-ng (0.4.10-1) precise; urgency=low
 
   * Fixed several compatibility issues (Unity, KDE)
