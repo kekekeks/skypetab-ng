@@ -234,6 +234,7 @@ const char* SkypeTab::tabClassesList[][2]={
 	{"Skype::TransferWindow", "File transfers"},
 	{"",""},//default classes are above this line
 	{"Skype::CallWindow", "Calls"},
+	{"Skype::CallView", "Skype 4.0 Calls"}, //FIXME: Add some code to merge that with previous line
 {0,0}};
 
 
@@ -285,7 +286,7 @@ void SkypeTab::onTryShow(QWidget *widget)
 		if(0==strcmp(widget->metaObject()->className(), "QWidget"))
 		{
 			QString title=widget->windowTitle();
-			if(title.contains("Skype")&&title.contains("Beta"))
+			if(title.contains("Skype")&&(title.contains("Beta")||title.contains("4.0")))
 			{
 				_mainSkypeWindow=widget;
 
