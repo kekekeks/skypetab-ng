@@ -1,2 +1,13 @@
 #!/bin/sh
-LD_PRELOAD=libskypetab-ng.so:$LD_PRELOAD exec skype $*
+cd $HOME/.Skype
+if test -e shared.xml
+then
+	find|grep config.xml|while read line;
+	do
+		sed -i "s/.UseUniqueConversationsWindow.*//" $line
+		sed -i "s/<UI>/<UI>\n    <UseUniqueConversationsWindow>1<\/UseUniqueConversationsWindow>/" $line
+		cat $line
+	done
+fi
+
+#LD_PRELOAD=libskypetab-ng.so:$LD_PRELOAD exec skype $*
