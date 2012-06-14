@@ -1,5 +1,5 @@
 Summary: This program adds tabs to Skype™ for Linux 
-%define version 0.4.11
+%define version 0.5.0
 Group:  Applications/Internet
 Name: skypetab-ng 
 License: LGPL
