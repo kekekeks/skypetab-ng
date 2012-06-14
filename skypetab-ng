@@ -10,4 +10,4 @@ then
 	done
 fi
 
-#LD_PRELOAD=libskypetab-ng.so:$LD_PRELOAD exec skype $*
+LD_PRELOAD=libskypetab-ng.so:$LD_PRELOAD exec skype $*
