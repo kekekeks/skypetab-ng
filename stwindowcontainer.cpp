@@ -171,7 +171,10 @@ void STWindowContainer::dragEnterEvent(QDragEnterEvent *ev)
 
 void STWindowContainer::dropEvent(QDropEvent *ev)
 {
-	_inputArea->dropEvent(ev);
+	if(_inputArea != NULL)
+		_inputArea->dropEvent(ev);
+	else
+		_embedded->dropEvent(ev);
 }
 
 void STWindowContainer::onDestroyed(QObject *)
