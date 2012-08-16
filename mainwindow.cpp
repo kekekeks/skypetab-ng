@@ -38,7 +38,7 @@ namespace skypetab
 STabMainWindow::STabMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-	X11::SetClassName(winId(), "SkypeTab");
+	X11::SetClassName(winId(), SkypeTab::windowClassName);
 	setFocusPolicy(Qt::StrongFocus);
 	_contacts=new ContactListContainer();
 	setMinimumSize(640,400);
@@ -120,7 +120,7 @@ bool STabMainWindow::activateTab(QWidget *widget)
 
 bool STabMainWindow::tryActivatePreviousInstance()
 {
-	QString cl="SkypeTab";
+	QString cl=SkypeTab::windowClassName;
 	WId instance = X11::FindWindowByClass (cl);
 	if(instance==0)
 		return false;

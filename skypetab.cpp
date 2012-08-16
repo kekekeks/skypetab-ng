@@ -92,6 +92,15 @@ void SkypeTab::stage1Init()
 			winManager=Unity;
 	}
 
+	foreach (QString cmdArg, QApplication::instance()->arguments())
+	{
+		QString wClPrefix = "--skypetab-class=";
+		if(cmdArg.startsWith(wClPrefix))
+		{
+			SkypeTab::windowClassName=cmdArg.mid(wClPrefix.length());
+		}
+	}
+
 
 	_instance=new SkypeTab();
 	if((settings.value("startup/activate", QVariant::fromValue(true)).toBool()) &&
@@ -228,6 +237,7 @@ bool SkypeTab::_manualTrayUpdate=false;
 QSettings SkypeTab::settings("kekekeks","skypetab-ng");
 WinManager SkypeTab::winManager=Generic;
 bool* SkypeTab::enabledTabClassesList=0;
+QString SkypeTab::windowClassName = "SkypeTab";
 
 const char* SkypeTab::tabClassesList[][2]={
 	{"Skype::ChatWindow", "Chats"},
