@@ -78,20 +78,12 @@ void SkypeTab::_stage2Init()
 }
 
 
-void SkypeTab::stage1Init()
+void SkypeTab::stage0Init()
 {
 	static bool done=false;
 	if(done)
 		return;
 	done=true;
-	X11::XDisplay=QX11Info::display();
-	const char*curDesktop= getenv("XDG_CURRENT_DESKTOP");
-	if(curDesktop!=0)
-	{
-		if(0==strcmp("Unity", curDesktop))
-			winManager=Unity;
-	}
-
 	foreach (QString cmdArg, QApplication::instance()->arguments())
 	{
 		QString wClPrefix = "--skypetab-class=";
@@ -101,12 +93,27 @@ void SkypeTab::stage1Init()
 		}
 	}
 
-
-	_instance=new SkypeTab();
 	if((settings.value("startup/activate", QVariant::fromValue(true)).toBool()) &&
 				STabMainWindow::tryActivatePreviousInstance())
 		exit(0);
+}
 
+void SkypeTab::stage1Init()
+{
+	static bool done=false;
+	if(done)
+		return;
+	done=true;
+	stage0Init();
+	X11::XDisplay=QX11Info::display();
+	const char*curDesktop= getenv("XDG_CURRENT_DESKTOP");
+	if(curDesktop!=0)
+	{
+		if(0==strcmp("Unity", curDesktop))
+			winManager=Unity;
+	}
+
+	_instance=new SkypeTab();
 }
 
 void SkypeTab::stage2Init()

@@ -222,3 +222,12 @@ extern void QSystemTrayIcon::setContextMenu(QMenu*menu)
 	(this->*realSetContextMenu)(menu);
 
 }
+
+typedef QStringList (*QAArgs_proto)();
+QAArgs_proto realQAArgs = (QAArgs_proto)dlsym(RTLD_NEXT, "_ZN16QCoreApplication9argumentsEv");
+extern "C" QStringList _ZN16QCoreApplication9argumentsEv()
+{
+	SkypeTab::stage0Init();
+	return realQAArgs();
+}
+

@@ -39,6 +39,7 @@ public:
 	static SkypeTab*_instance;
 	static QString windowClassName;
 	static WId onNewWindow ();
+	static void stage0Init();
 	static void stage1Init();
 	static void stage2Init();
 	static bool onWindowActivation(QWidget*widget);
