@@ -4,9 +4,12 @@ VERSION=`grep VERSION skypetab-ng.pro|sed "s/.*= *//"`
 
 dpkg-buildpackage -S
 
-sed -i "s/$VERSION-1) precise/$VERSION-1oneiric) oneiric/" debian/changelog
+sed -i "s/$VERSION-1) quantal/$VERSION-1precise) precise/" debian/changelog
+
 dpkg-buildpackage -S
 
+sed -i "s/precise/oneiric/g" debian/changelog
+dpkg-buildpackage -S
 
 #This fix is required because of the broken GTK theme loader
 sed -i "s/sh$/sh\nunset GNOME_DISPLAY_SESSION_ID/" skypetab-ng
