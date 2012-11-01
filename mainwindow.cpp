@@ -150,7 +150,11 @@ void STabMainWindow::timerEvent(QTimerEvent *)
 		QString title=cont->getShortWindowTitle(15);
 		bool hasAlets=cont->hasAlerts();
 		QIcon icon=cont->widget()->windowIcon();
-		_tabs->setTabText(i, title);
+		QString oldText = _tabs->tabText(i);
+		if(title!=oldText)
+		{
+			_tabs->setTabText(i, title);
+		}
 		_tabs->setTabIcon(i, icon);
 
 		if ((!foundActive)&&(0==strcmp (cont->widget()->metaObject()->className(), "Skype::ChatWindow")))
