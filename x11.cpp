@@ -19,6 +19,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "x11.h"
+#include <stdio.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
@@ -107,7 +108,7 @@ namespace X11
 		//FIXME: possible buffer overflow
 		strcpy(ev.xclient.data.b, message.toLatin1().data());
 		int ret=XSendEvent(X11::XDisplay, win, 0, NoEventMask, &ev);
-		printf("XSendEvent: %i", ret);
+		printf("XSendEvent: %i\n", ret);
 		XSync(X11::XDisplay, False);
 	}
 
