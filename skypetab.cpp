@@ -104,8 +104,8 @@ void SkypeTab::stage1Init()
 	if(done)
 		return;
 	done=true;
-	stage0Init();
 	X11::XDisplay=QX11Info::display();
+	stage0Init();
 	const char*curDesktop= getenv("XDG_CURRENT_DESKTOP");
 	if(curDesktop!=0)
 	{
