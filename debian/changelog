@@ -1,3 +1,9 @@
+skypetab-ng (0.5.0-1ubuntu1) quantal; urgency=low
+
+  * Speed up window activation from closed state 
+
+ -- Nikita Tsukanov <keks9n@gmail.com>  Fri, 02 Nov 2012 15:22:22 +0400
+
 skypetab-ng (0.5.0-1) quantal; urgency=low
 
   * Now compatible with Skype 4.0
