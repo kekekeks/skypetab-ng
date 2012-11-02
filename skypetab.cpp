@@ -93,8 +93,7 @@ void SkypeTab::stage0Init()
 		}
 	}
 
-	if((settings.value("startup/activate", QVariant::fromValue(true)).toBool()) &&
-				STabMainWindow::tryActivatePreviousInstance())
+	if(STabMainWindow::tryActivatePreviousInstance())
 		exit(0);
 }
 
