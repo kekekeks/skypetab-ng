@@ -8,7 +8,7 @@ QT       += core gui
 
 LIBS+= -lX11
 
-TARGET = launcher
+TARGET = skypetab-prelaunch
 TEMPLATE = app
 
 
@@ -16,3 +16,9 @@ SOURCES += main.cpp \
     ../x11.cpp
 
 HEADERS  +=
+
+unix:
+{
+   target.path = /usr/bin
+   INSTALLS += target
+}

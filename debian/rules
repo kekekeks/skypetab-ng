@@ -4,10 +4,12 @@ clean:
 build:
 	qmake -spec linux-g++-32
 	make
+	cd launcher && qmake && make
 
 install: build
 	make install  INSTALL_ROOT=`pwd`/debian/skypetab-ng
-
+	cd launcher && make install INSTALL_ROOT=`pwd`/../debian/skypetab-ng
+	sed -i "s/exec skype/exec skypetab-prelaunch/" debian/skypetab-ng/usr/bin/skypetab-ng
 binary-indep:
 
 binary-arch: install
