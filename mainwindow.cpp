@@ -487,9 +487,17 @@ bool skypetab::STabMainWindow::x11Event(XEvent *ev)
 	{
 		if(0==memcmp(ev->xclient.data.b, "ACT", 3))
 		{
-			show();
-			raise();
-
+			if(SkypeTab::winManager==Unity)
+			{
+				hide();
+				show();
+			}
+			else
+			{
+				show();
+				raise();
+				activateWindow();
+			}
 		}
 	}
 	return QMainWindow::x11Event(ev);
