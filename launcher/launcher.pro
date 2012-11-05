@@ -4,16 +4,16 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+
 
 LIBS+= -lX11
 
 TARGET = skypetab-prelaunch
 TEMPLATE = app
 
-
-SOURCES += main.cpp \
-    ../x11.cpp
+CONFIG -= qt
+SOURCES += \
+    main.cpp
 
 HEADERS  +=
 
