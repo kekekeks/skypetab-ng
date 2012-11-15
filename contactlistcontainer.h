@@ -18,7 +18,8 @@ public:
 	QString title();
 signals:
 	
-public slots:
+private slots:
+	void onDelete();
 	
 };
 }

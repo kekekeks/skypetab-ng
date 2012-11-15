@@ -233,13 +233,18 @@ bool SkypeTab::mainSkypeWindowEnabled()
 void SkypeTab::onTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
 {
 	stage2Init();
-	if(reason!=QSystemTrayIcon::Context)
+	if(reason!=QSystemTrayIcon::Context && mainSkypeWindowEnabled())
 	{
 		onTrayIcon();
 	}
 	else
 		raiseTrayMenuActivated(reason);
 
+}
+
+void SkypeTab::onMainWindowDestroyed()
+{
+	_mainSkypeWindow = 0;
 }
 
 
@@ -317,9 +322,9 @@ void SkypeTab::onTryShow(QWidget *widget)
 				(title.contains("Skype")&&(title.contains("Beta")||title.contains("4.0")||title.contains("- Skype™"))))
 			{
 				_mainSkypeWindow=widget;
-
+				connect(widget, SIGNAL(destroyed()), _instance, SLOT(onMainWindowDestroyed()));
 				_instance->mainWindow->SetMainWindow(widget);
-
+				_instance->_oldMainWindowEnabled = true;
 				if(!settings.value("startup/hidden", QVariant::fromValue(false)).toBool())
 					_instance->mainWindow->show();
 				break;
@@ -362,6 +367,15 @@ void SkypeTab::timerEvent(QTimerEvent *)
 		mainWindow->AddTab(widget);
 		mainWindow->activateWindow();
 
+	}
+	bool mwEnabled=mainSkypeWindowEnabled();
+	if(_oldMainWindowEnabled!=mwEnabled)
+	{
+		if(mwEnabled)
+			mainWindow->show();
+		else
+			mainWindow->hide();
+		_oldMainWindowEnabled=mwEnabled;
 	}
 }
 

@@ -31,7 +31,7 @@ class SkypeTab : public QObject
 	static QPixmap* _trayPixmap;
 	static int _activeMsgsCount;
 	static bool _manualTrayUpdate;
-
+	bool _oldMainWindowEnabled;
 	void _stage2Init();
 public:
     explicit SkypeTab(QObject *parent = 0);
@@ -60,6 +60,7 @@ signals:
 private slots:
 	void onMenuShow();
 	void onTrayMenuActivated (QSystemTrayIcon::ActivationReason reason);
+	void onMainWindowDestroyed();
 };
 }
 #endif // STLOGIC_H

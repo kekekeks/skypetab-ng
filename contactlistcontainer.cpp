@@ -47,8 +47,8 @@ void ContactListContainer::resizeEvent(QResizeEvent *event)
 void ContactListContainer::embedWindow(QWidget *window)
 {
 	window->setParent(this, 0);
-
 	_embedded=window;
+	connect(_embedded, SIGNAL(destroyed()), SLOT(onDelete()));
 	startTimer(500);
 	_embedded->move(0,0);
 	show();
@@ -79,6 +79,11 @@ QString ContactListContainer::title()
 	if(_embedded!=0)
 		return _embedded->windowTitle();
 	return QString("SkypeTab. [NOT INITIALIZED]");
+}
+
+void ContactListContainer::onDelete()
+{
+	_embedded = NULL;
 }
 
 }
