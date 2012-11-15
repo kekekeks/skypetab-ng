@@ -71,8 +71,7 @@ void SkypeTab::_stage2Init()
 
 
 	printf("Created main window\n");
-	if(!settings.value("startup/hidden", QVariant::fromValue(false)).toBool())
-		mainWindow->show();
+
 	this->startTimer(50);
 	_stagingArea=(new QWidget())->winId();
 }
@@ -302,11 +301,16 @@ void SkypeTab::onTryShow(QWidget *widget)
 		if(0==strcmp(widget->metaObject()->className(), "QWidget"))
 		{
 			QString title=widget->windowTitle();
-			if(title.contains("Skype")&&(title.contains("Beta")||title.contains("4.0")))
+			QString clName=widget->metaObject()->className();
+			if((clName=="QWidget")&&
+				(title.contains("Skype")&&(title.contains("Beta")||title.contains("4.0")||title.contains("- Skype™"))))
 			{
 				_mainSkypeWindow=widget;
 
 				_instance->mainWindow->SetMainWindow(widget);
+
+				if(!settings.value("startup/hidden", QVariant::fromValue(false)).toBool())
+					_instance->mainWindow->show();
 				break;
 			}
 		}
@@ -324,7 +328,6 @@ void SkypeTab::onTrayIcon()
 	stage2Init();
 	if((SkypeTab::winManager==Generic) && (mainWindow->isActiveWindow()||mainWindow->hasActiveTab()))
 	{
-
 		mainWindow->setWindowState(mainWindow->windowState() & ~Qt::WindowActive | Qt::WindowMinimized);
 	}
 	else
