@@ -219,6 +219,17 @@ void skypetab::SkypeTab::onSetContextMenu(QMenu *menu)
 	_instance->onMenuShow();
 }
 
+bool SkypeTab::mainSkypeWindowEnabled()
+{
+	if(!_instance)
+		return false;
+	if(!_mainSkypeWindow)
+		return false;
+	if(_mainSkypeWindow->windowTitle().startsWith("Skype™"))
+		return false;
+	return true;
+}
+
 void SkypeTab::onTrayMenuActivated(QSystemTrayIcon::ActivationReason reason)
 {
 	stage2Init();

@@ -53,6 +53,7 @@ public:
 	static WinManager winManager;
 	static void onSetContextMenu(QMenu*menu);
 	static const char*tabClassesList[][2];
+	static bool mainSkypeWindowEnabled();
 signals:
 	void _raiseTrayMenuActivated (QSystemTrayIcon::ActivationReason reason);
 

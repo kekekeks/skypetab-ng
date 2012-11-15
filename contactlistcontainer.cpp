@@ -62,7 +62,8 @@ void ContactListContainer::timerEvent(QTimerEvent *e)
 		_embedded->resize(size());
 		if(_embedded->isHidden())
 		{
-			SkypeTab::_instance->raiseTrayMenuActivated(QSystemTrayIcon::Trigger);
+			if(SkypeTab::mainSkypeWindowEnabled())
+				SkypeTab::_instance->raiseTrayMenuActivated(QSystemTrayIcon::Trigger);
 		}
 	}
 	QWidget::timerEvent(e);
