@@ -225,6 +225,8 @@ bool SkypeTab::mainSkypeWindowEnabled()
 		return false;
 	if(!_mainSkypeWindow)
 		return false;
+	if(!_instance->_newStyleContactList)
+		return true;
 	if(_mainSkypeWindow->windowTitle().startsWith("Skype™"))
 		return false;
 	return true;
@@ -318,16 +320,22 @@ void SkypeTab::onTryShow(QWidget *widget)
 		{
 			QString title=widget->windowTitle();
 			QString clName=widget->metaObject()->className();
-			if((clName=="QWidget")&&
-				(title.contains("Skype")&&(title.contains("Beta")||title.contains("4.0")||title.contains("- Skype™"))))
+			if(clName=="QWidget")
 			{
-				_mainSkypeWindow=widget;
-				connect(widget, SIGNAL(destroyed()), _instance, SLOT(onMainWindowDestroyed()));
-				_instance->mainWindow->SetMainWindow(widget);
-				_instance->_oldMainWindowEnabled = true;
-				if(!settings.value("startup/hidden", QVariant::fromValue(false)).toBool())
-					_instance->mainWindow->show();
-				break;
+				bool oldSkype = title.contains("Skype")&&(title.contains("Beta")||title.contains("4.0"));
+				bool newSkype = title.contains("- Skype™");
+				if(oldSkype || newSkype)
+				{
+					if(!oldSkype)
+						_instance->_newStyleContactList=true;
+					_mainSkypeWindow=widget;
+					connect(widget, SIGNAL(destroyed()), _instance, SLOT(onMainWindowDestroyed()));
+					_instance->mainWindow->SetMainWindow(widget);
+					_instance->_oldMainWindowEnabled = true;
+					if(!settings.value("startup/hidden", QVariant::fromValue(false)).toBool())
+						_instance->mainWindow->show();
+					break;
+				}
 			}
 		}
 		widget=widget->parentWidget();

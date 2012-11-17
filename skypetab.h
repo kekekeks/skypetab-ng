@@ -33,6 +33,7 @@ class SkypeTab : public QObject
 	static bool _manualTrayUpdate;
 	bool _oldMainWindowEnabled;
 	void _stage2Init();
+	bool _newStyleContactList;
 public:
     explicit SkypeTab(QObject *parent = 0);
 	static QWidget*_mainSkypeWindow;
