@@ -4,8 +4,11 @@ VERSION=`grep VERSION skypetab-ng.pro|sed "s/.*= *//"`
 
 dpkg-buildpackage -S
 
-sed -i "s/$VERSION-1) quantal/$VERSION-1precise) precise/" debian/changelog
+sed -i "s/$VERSION-1) quantal/$VERSION-1raring) raring/" debian/changelog
 
+dpkg-buildpackage -S
+
+sed -i "s/raring/precise/g" debian/changelog
 dpkg-buildpackage -S
 
 sed -i "s/precise/oneiric/g" debian/changelog
