@@ -130,6 +130,8 @@ bool SkypeTab::onWindowActivation(QWidget *widget)
 	while(widget->parentWidget())
 		widget=widget->parentWidget();
 	QString cl=QString::fromLocal8Bit(widget->metaObject()->className());
+	if((settings.value("tabs/disableTransferActivation", QVariant::fromValue(false)).toBool()) && cl=="Skype::TransferWindow")
+		return false;
 	if(_instance->mainWindow->activateTab(widget))
 	{
 		QApplication::setActiveWindow(widget);

@@ -47,6 +47,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	layout=new QBoxLayout(QBoxLayout::TopToBottom);
 	group->setLayout(layout);
 	addSettingsCheckbox(layout, "Don't close tabs with the window", "tabs/noClose", false);
+	addSettingsCheckbox(layout, "Don't activate on file transfers", "tabs/disableTransferActivation", false);
 	addSettingsCheckbox(layout, "Always show additional event counter", "tabCounter/alwaysShow", false);
 	if(SkypeTab::winManager==Unity)
 	{
