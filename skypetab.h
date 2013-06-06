@@ -50,6 +50,7 @@ public:
 	static void onTryShow(QWidget*widget);
 	void raiseTrayMenuActivated(QSystemTrayIcon::ActivationReason reason);
 	static void updateTrayIcon(int);
+	static bool needTabActivation (QWidget* widget);
 	static QSettings settings;
 	static WinManager winManager;
 	static void onSetContextMenu(QMenu*menu);

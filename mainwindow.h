@@ -21,7 +21,7 @@ class STabMainWindow : public QMainWindow
 public:
     explicit STabMainWindow(QWidget *parent = 0);
     ~STabMainWindow();
-	STWindowContainer *AddTab(QWidget *tab);
+	STWindowContainer *AddTab(QWidget *tab, bool activate);
 	void SetMainWindow(QWidget *tab);
 	bool hasActiveTab();
 	void toggleContacts();

@@ -73,11 +73,12 @@ STabMainWindow::~STabMainWindow()
 }
 
 
-STWindowContainer* STabMainWindow::AddTab(QWidget* w)
+STWindowContainer* STabMainWindow::AddTab(QWidget* w, bool activate)
 {
 	STWindowContainer*c=new STWindowContainer();
 	_tabs->addTab(c, "");
-	_tabs->setCurrentWidget(c);
+	if(activate)
+		_tabs->setCurrentWidget(c);
 
 	c->embedWindow(w);
 	_tabs->setTabText(_tabs->count()-1, c->getShortWindowTitle(15));

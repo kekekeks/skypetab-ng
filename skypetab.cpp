@@ -124,13 +124,21 @@ void SkypeTab::stage2Init()
 	_instance->_stage2Init();
 }
 
+bool SkypeTab::needTabActivation (QWidget* widget)
+{
+	QString cl=QString::fromLocal8Bit(widget->metaObject()->className());
+	if((settings.value("tabs/disableTransferActivation", QVariant::fromValue(false)).toBool()) && cl=="Skype::TransferWindow")
+		return false;
+	return true;
+}
+
 bool SkypeTab::onWindowActivation(QWidget *widget)
 {
 	stage2Init();
 	while(widget->parentWidget())
 		widget=widget->parentWidget();
 	QString cl=QString::fromLocal8Bit(widget->metaObject()->className());
-	if((settings.value("tabs/disableTransferActivation", QVariant::fromValue(false)).toBool()) && cl=="Skype::TransferWindow")
+	if(!needTabActivation(widget))
 		return false;
 	if(_instance->mainWindow->activateTab(widget))
 	{
@@ -374,8 +382,10 @@ void SkypeTab::timerEvent(QTimerEvent *)
 		mainWindow->show();
 		X11::Flush();
 
-		mainWindow->AddTab(widget);
-		mainWindow->activateWindow();
+		bool activate = needTabActivation(widget);
+		mainWindow->AddTab(widget, activate);
+		if(activate)
+			mainWindow->activateWindow();
 
 	}
 	bool mwEnabled=mainSkypeWindowEnabled();
