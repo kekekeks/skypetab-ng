@@ -45,6 +45,19 @@ namespace X11
 		XGetInputFocus(XDisplay, &w, &i);
 		return w;
 	}
+
+
+	int ApplicationErrorHandler(Display*, XErrorEvent* ev)
+	{
+		fprintf(stderr, "X11 ERROR %d, ignoring\n", ev->error_code);
+		return 0;
+	}
+
+	void SetupErrorHandler ()
+	{
+		XSetErrorHandler(ApplicationErrorHandler);
+	}
+
 	void SetClassName(WId window, QString className)
 	{
 		XClassHint classHint;

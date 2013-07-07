@@ -72,6 +72,9 @@ void SkypeTab::_stage2Init()
 
 	printf("Created main window\n");
 
+	if(settings.value("x11/swallowErrors", QVariant::fromValue(false)).toBool())
+		X11::SetupErrorHandler();
+
 	this->startTimer(50);
 	_stagingArea=(new QWidget())->winId();
 }

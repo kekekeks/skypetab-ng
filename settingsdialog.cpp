@@ -49,6 +49,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	addSettingsCheckbox(layout, "Don't close tabs with the window", "tabs/noClose", false);
 	addSettingsCheckbox(layout, "Don't activate on file transfers", "tabs/disableTransferActivation", false);
 	addSettingsCheckbox(layout, "Always show additional event counter", "tabCounter/alwaysShow", false);
+	addSettingsCheckbox(layout, "Swallow X11 errors", "x11/swallowErrors", true);
 	if(SkypeTab::winManager==Unity)
 	{
 		addSettingsCheckbox(layout, "Do not wiggle constantly in Unity launcher", "unity/noConstantUrgency", false);
