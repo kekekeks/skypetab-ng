@@ -329,14 +329,15 @@ void SkypeTab::onTryShow(QWidget *widget)
 	//Walk on widget's hierarhy
 	while (widget)
 	{
-		if(0==strcmp(widget->metaObject()->className(), "QWidget"))
+		const char *className = widget->metaObject()->className();
+		if(0==strcmp(className, "QWidget") || 0==strcmp(className, "QMainWindow"))
 		{
 			QString title=widget->windowTitle();
 			QString clName=widget->metaObject()->className();
-			if(clName=="QWidget")
+			if(clName=="QWidget" || clName == "QMainWindow")
 			{
-				bool oldSkype = title.contains("Skype")&&(title.contains("Beta")||title.contains("4.0"));
-				bool newSkype = title.contains("- Skype™");
+				bool oldSkype = title.contains("Skype") && (title.contains("Beta") || title.contains("4.0"));
+				bool newSkype = title.contains("- Skype™")||clName =="QMainWindow";
 				if(oldSkype || newSkype)
 				{
 					if(!oldSkype)
