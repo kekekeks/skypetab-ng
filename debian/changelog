@@ -1,3 +1,9 @@
+skypetab-ng (0.5.3-ubuntu) trusty; urgency=medium
+
+  * Added compatibility with Skype 4.3, now building only for trusty
+
+ -- Nikita Tsukanov <keks9n@gmail.com>  Thu, 19 Jun 2014 00:26:48 +0400
+
 skypetab-ng (0.5.2-1) quantal; urgency=low
 
   * Added compatibility with Skype 4.1
