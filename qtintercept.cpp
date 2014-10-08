@@ -231,3 +231,35 @@ extern "C" QStringList _ZN16QCoreApplication9argumentsEv()
 	return realQAArgs();
 }
 
+namespace Qt
+{
+typedef QString (*qtescape)(const QString & plain);
+qtescape realQtEscape = 0;
+extern QString escape ( const QString & plain )
+{
+	if(realQtEscape==0)
+	{
+		realQtEscape=&Qt::escape;
+		void *ptr;
+		memcpy(&ptr, &realQtEscape, sizeof(ptr));
+		Dl_info nfo;
+		dladdr(ptr, &nfo);
+		ptr=dlsym(RTLD_NEXT, nfo.dli_sname);
+		memcpy(&realQtEscape, &ptr, sizeof(ptr));
+	}
+	uint *pPlain =(uint*)(void*) &plain;
+	if(*pPlain==0)
+	{
+		QString*wtf=(QString*) malloc(sizeof(QString));
+		*wtf="";
+		memcpy(pPlain, wtf, sizeof(QString));
+		free(wtf);
+
+		return "";
+	}
+	return realQtEscape(plain);
+}
+}
+
+
+
