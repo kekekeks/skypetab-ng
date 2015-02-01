@@ -21,6 +21,7 @@ SOURCES += \
     focusguard.cpp \
     aboutdialog.cpp \
     qtintercept.cpp \
+    skype-poll-fix.c \
     settingsdialog.cpp
 
 HEADERS +=\
